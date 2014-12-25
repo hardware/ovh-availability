@@ -98,7 +98,7 @@ exports.run = function( req, res, next ) {
                 // Ajout de la demande au sein de la base de données
                 function( callback ) {
 
-                    crypto.randomBytes(16, function( ex, buffer ) {
+                    crypto.randomBytes(24, function( ex, buffer ) {
 
                         var data = {
                             reference:req.body.server,
