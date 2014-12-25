@@ -12,10 +12,10 @@ exports.up = function( next ) {
             // Création de l'énumération "SERVERS_TYPE"
             function( callback ) {
 
-                var q = client.query("CREATE TYPE public.servers_type AS ENUM ('sys','kimsufi')");
+                client.query("CREATE TYPE public.servers_type AS ENUM ('sys','kimsufi')", function( err, result ) {
 
-                q.on('end', function() {
                     callback();
+
                 });
 
             },
@@ -23,10 +23,10 @@ exports.up = function( next ) {
             // Création de l'énumération "REQUEST_STATE"
             function( callback ) {
 
-                var q = client.query("CREATE TYPE public.request_state AS ENUM ('pending','done')");
+                client.query("CREATE TYPE public.request_state AS ENUM ('pending','done')", function( err, result ) {
 
-                q.on('end', function() {
                     callback();
+
                 });
 
             },
@@ -34,7 +34,7 @@ exports.up = function( next ) {
             // Création de la table "SERVERS"
             function( callback ) {
 
-                var q = client.query("                             \
+                client.query("                                     \
                     CREATE TABLE public.servers(                   \
                         id serial NOT NULL,                        \
                         type public.servers_type NOT NULL,         \
@@ -42,10 +42,10 @@ exports.up = function( next ) {
                         reference character varying(10) NOT NULL,  \
                         CONSTRAINT id_servers_pm PRIMARY KEY (id), \
                         CONSTRAINT unique_ref UNIQUE (reference)   \
-                )");
+                )", function( err, result ) {
 
-                q.on('end', function() {
                     callback();
+
                 });
 
             },
@@ -53,7 +53,7 @@ exports.up = function( next ) {
             // Création de la table "REQUESTS"
             function( callback ) {
 
-                var q = client.query("                                         \
+                client.query("                                                 \
                     CREATE TABLE public.requests(                              \
                         id serial NOT NULL,                                    \
                         reference character varying(10) NOT NULL,              \
@@ -61,10 +61,10 @@ exports.up = function( next ) {
                         date timestamp with time zone NOT NULL DEFAULT NOW(),  \
                         state public.request_state NOT NULL DEFAULT 'pending', \
                         CONSTRAINT id_requests_pm PRIMARY KEY (id)             \
-                )");
+                )", function( err, result ) {
 
-                q.on('end', function() {
                     callback();
+
                 });
 
             },
@@ -72,12 +72,12 @@ exports.up = function( next ) {
             // Création de la relation entre la table 'servers' et 'requests'
             function( callback ) {
 
-                var q = client.query("ALTER TABLE public.requests ADD CONSTRAINT ref_servers_fk FOREIGN KEY (reference) \
-                                      REFERENCES public.servers (reference) MATCH FULL \
-                                      ON DELETE NO ACTION ON UPDATE NO ACTION;");
+                client.query("ALTER TABLE public.requests ADD CONSTRAINT ref_servers_fk FOREIGN KEY (reference) \
+                              REFERENCES public.servers (reference) MATCH FULL \
+                              ON DELETE NO ACTION ON UPDATE NO ACTION;", function( err, result ) {
 
-                q.on('end', function() {
                     callback();
+
                 });
 
             },
@@ -259,40 +259,40 @@ exports.down = function( next ) {
 
             function( callback ) {
 
-                var q = client.query("DROP TABLE servers CASCADE");
+                client.query("DROP TABLE servers CASCADE", function( err, result ) {
 
-                q.on('end', function() {
                     callback();
+
                 });
 
             },
 
             function( callback ) {
 
-                var q = client.query("DROP TABLE requests CASCADE");
+                client.query("DROP TABLE requests CASCADE", function( err, result ) {
 
-                q.on('end', function() {
                     callback();
+
                 });
 
             },
 
             function( callback ) {
 
-                var q = client.query("DROP TYPE servers_type");
+                client.query("DROP TYPE servers_type", function( err, result ) {
 
-                q.on('end', function() {
                     callback();
+
                 });
 
             },
 
             function( callback ) {
 
-                var q = client.query("DROP TYPE request_state");
+                client.query("DROP TYPE request_state", function( err, result ) {
 
-                q.on('end', function() {
                     callback();
+
                 });
 
             }
