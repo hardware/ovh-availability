@@ -86,7 +86,7 @@ exports.run = function( req, res, next ) {
                         api.checkOffer(json, req.body.server, next, function( available ) {
 
                             if( available )
-                                callback("L'offre " + req.body.server + " est déjà disponible, vous pouvez réserver votre serveur dès à présent.");
+                                callback("Cette offre est déjà disponible, vous pouvez réserver votre serveur dès à présent.");
                             else
                                 callback();
 
