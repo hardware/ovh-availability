@@ -63,15 +63,15 @@ var inform = function( request, next ) {
               <p>Le serveur " + request.name + " est disponible.</p> \
               <p>Pour le réserver, cliquez sur le lien ci-dessous :</p> \
               <a href='" + orderUrl + "'>Commander</a> \
-              <p>Si vous avez raté l'offre, vous pouvez toujours refaire une demande via :</p> \
-              <a href='" + process.env.APP_URL + "'>" + process.env.APP_URL + "</a> \
+              <p>Si vous avez raté l'offre, vous pouvez toujours réactiver votre demande en cliquant sur ce lien :</p> \
+              <a href='" + process.env.APP_URL + "request/reactivate/" + request.token + "'>Réactiver ma demande</a> \
               <p>A très bientôt sur ovh-availability</p>"
     };
 
     mailer.send( payload, next );
 
     // Mise à jour de l'état de la demande ( pending -> done )
-    requestModel.updateState( request.id, next );
+    requestModel.updateState( 'done', request.id, next );
 
 }
 

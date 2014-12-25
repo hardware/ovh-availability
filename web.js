@@ -49,6 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // INDEX
 app.get('/', routes.index);
 app.post('/', routes.run);
+app.get('/request/reactivate/:token', routes.reactivate);
 
 // CRON
 app.get('/cron/handleRequests/:secureKey', cron.handleRequests);

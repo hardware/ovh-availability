@@ -1,0 +1,9 @@
+extends layout
+
+block content
+
+    if formSuccess
+        .alert.alert-success !{formMessage}
+
+    if formError
+        .alert.alert-danger #{formMessage}

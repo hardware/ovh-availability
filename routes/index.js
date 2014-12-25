@@ -1,4 +1,5 @@
 var async        = require('async');
+var crypto       = require('crypto');
 var data         = require('./data');
 var api          = require('./api');
 var recaptcha    = require('./recaptcha');
@@ -92,30 +93,32 @@ exports.run = function( req, res, next ) {
                         });
                     });
 
-
                 },
-
 
                 // Ajout de la demande au sein de la base de données
                 function( callback ) {
 
-                    var data = {
-                        reference:req.body.server,
-                        mail:req.body.mail
-                    };
+                    crypto.randomBytes(16, function( ex, buffer ) {
 
-                    requestModel.add(data, next, function( result ) {
+                        var data = {
+                            reference:req.body.server,
+                            mail:req.body.mail,
+                            token:buffer.toString('hex')
+                        };
 
-                        if( result ) {
+                        requestModel.add(data, next, function( result ) {
 
-                            callback();
+                            if( result ) {
 
-                        } else {
+                                callback();
 
-                            callback('Une erreur est survenue lors de l\'enregistrement de votre demande dans la base de données.');
+                            } else {
 
-                        }
+                                callback("Une erreur est survenue lors de l'enregistrement de votre demande dans la base de données.");
 
+                            }
+
+                        });
                     });
 
                 }
@@ -148,4 +151,74 @@ exports.run = function( req, res, next ) {
 
     });
 
+};
+
+/*
+ *  INDEX
+ *  Route : /request/reactivate/:token
+ *  Methode : GET
+ */
+exports.reactivate = function( req, res, next ) {
+
+    data.settings(req, res, { shouldBeLogged:false, mayBeLogged:true }, function( settings ) {
+        requestModel.getRequestByToken(req.params.token, next, function( request ) {
+
+            async.waterfall([
+
+                // Vérification du token
+                function( callback ) {
+
+                    if( ! request )
+                        callback("Impossible d'effectuer cette action, token invalide.");
+                    else
+                        callback();
+
+                },
+
+                // Vérification de l'état de la demande
+                function( callback ) {
+
+                    if( request.state == 'pending' )
+                        callback("Impossible d'effectuer cette action, votre demande est toujours active.");
+                    else
+                        callback();
+
+                },
+
+                // Mise à jour de la demande
+                function( callback ) {
+
+                    crypto.randomBytes(24, function( ex, buffer ) {
+
+                        var token = buffer.toString('hex');
+
+                        requestModel.updateState('pending', request.id, next);
+                        requestModel.updateToken(token, request.id, next);
+
+                        callback();
+
+                    });
+
+                }
+
+            ], function( err, result ) {
+
+                if( err ) {
+
+                    settings.formError   = true;
+                    settings.formMessage = err;
+
+                } else {
+
+                    settings.formSuccess = true;
+                    settings.formMessage = 'Votre demande a bien été réactivée.';
+
+                }
+
+                res.render('reactivate', settings);
+
+            });
+
+        });
+    });
 };
