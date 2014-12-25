@@ -2,11 +2,9 @@ var pg    = require('pg');
 var S     = require('string');
 var async = require('async');
 
-var DB_URL  = process.env.DATABASE_URL || 'tcp://localhost:5432/ovh-availability';
-
 exports.up = function( next ) {
 
-    pg.connect(DB_URL, function( dbErr, client, done ) {
+    pg.connect(process.env.DATABASE_URL, function( dbErr, client, done ) {
 
         async.series([
 
