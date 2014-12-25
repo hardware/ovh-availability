@@ -15,9 +15,6 @@ var cron       = require('./routes/cron');
 
 var app = express();
 
-// URL de la base de donnée ( prod / dev )
-process.env.DATABASE_URL = process.env.DATABASE_URL || 'tcp://localhost:5432/ovh-availability';
-
 app.set('env', process.env.ENV || 'development');
 app.set('port', process.env.PORT);
 app.set('views', path.join(__dirname, 'views'));
@@ -45,11 +42,9 @@ app.use(function( req, res, next ) {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 /*
  *  ROUTES
  */
-
 
 // INDEX
 app.get('/', routes.index);

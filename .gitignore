@@ -1,6 +1,7 @@
 node_modules
 bower
 build
+Procfile_dev
 
 *~
 *.log
