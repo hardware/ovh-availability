@@ -1,0 +1,33 @@
+mixin ie(condition)
+  | <!--[!{condition}]>
+  block
+  | <![endif]-->
+
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible' content='IE=edge')
+        meta(name='viewport' content='width=device-width, initial-scale=1')
+        title=title
+        <!-- link(href="/img/icons/favicon.ico" rel="icon") -->
+        link(href='/bower/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+        link(href='/css/template.css', rel='stylesheet')
+
+        +ie('if lt IE 9')
+            script(src='/bower/html5shiv/dist/html5shiv.js')
+            script(src='/bower/respond/dest/respond.min.js')
+
+        script(src='/bower/jquery/dist/jquery.min.js')
+        script(src='https://www.google.com/recaptcha/api.js' async defer)
+
+    body
+        .container
+            include includes/header
+
+            .content
+                block content
+
+            include includes/footer
+
+        include includes/javascript

@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+var argv    = require('optimist').argv;
+var request = require('request');
+
+var options = {
+    method: 'GET',
+    uri: process.env.APP_URL + 'cron/' + argv.task + '/' + process.env.CRON_KEY
+};
+
+request(options, function( error, response, body ) {
+
+    if( ! error && response.statusCode == 200 ) console.log( body );
+
+});

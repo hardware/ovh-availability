@@ -1,0 +1,23 @@
+{
+  "name": "ovh-availability",
+  "version": "1.0.0",
+  "description": "Application permettant de connaitre la disponibilité des serveurs d'OVH (SoYourStart, Kimsufi)",
+  "main": "web.js",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hardware/ovh-availability",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "jquery": "1.11.1",
+    "bootstrap": "3.2.0",
+    "html5shiv": "3.7.2",
+    "respond": "1.4.2"
+  }
+}

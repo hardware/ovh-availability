@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.7.0">
+<database name="new_database">
+</database>
+
+<schema name="public" protected="true" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<usertype name="request_state" configuration="enumeration">
+	<schema name="public"/>
+	<enumeration values="pending,done"/>
+</usertype>
+
+<table name="requests">
+	<schema name="public"/>
+	<position x="715" y="224"/>
+	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="ref" not-null="true">
+		<type name="character varying" length="10"/>
+	</column>
+	<column name="mail" not-null="true">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="date" not-null="true" default-value="NOW()">
+		<type name="timestamp" with-timezone="true"/>
+	</column>
+	<column name="state" not-null="true" default-value="'pending'">
+		<type name="public.request_state"/>
+	</column>
+	<constraint name="id_requests_pm" type="pk-constr" factor="10" table="public.requests">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<usertype name="servers_type" configuration="enumeration">
+	<schema name="public"/>
+	<enumeration values="sys,kimsufi"/>
+</usertype>
+
+<table name="servers">
+	<schema name="public"/>
+	<position x="208" y="228"/>
+	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="type" not-null="true">
+		<type name="public.servers_type"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="reference" not-null="true">
+		<type name="character varying" length="10"/>
+	</column>
+	<constraint name="id_servers_pm" type="pk-constr" factor="10" table="public.servers">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="reference_servers_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.servers" table="public.requests">
+	<columns names="ref" ref-type="src-columns"/>
+	<columns names="reference" ref-type="dst-columns"/>
+</constraint>
+<relationship name="rel_requests_servers" type="relfk"
+	 src-table="public.requests"
+	 dst-table="public.servers"
+	 src-required="true" dst-required="true"/>
+
+</dbmodel>
