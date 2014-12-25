@@ -1,5 +1,4 @@
 var pg    = require('pg');
-var S     = require('string');
 var async = require('async');
 
 exports.up = function( next ) {
@@ -252,7 +251,7 @@ exports.up = function( next ) {
 
 exports.down = function( next ) {
 
-    pg.connect(DB_URL, function( dbErr, client, done ) {
+    pg.connect(process.env.DATABASE_URL, function( dbErr, client, done ) {
 
         async.series([
 

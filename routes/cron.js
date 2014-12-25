@@ -1,5 +1,6 @@
 var async        = require('async');
 var request      = require('request');
+var api          = require('./api');
 var mailer       = require('./mailer');
 var requestModel = require('../models/requests');
 
@@ -12,56 +13,25 @@ exports.handleRequests = function( req, res, next ) {
 
     checkSecureKey(req, res, req.params.secureKey, function() {
         requestModel.getPendingRequests(next, function( pendingRequests ) {
-            request(process.env.OVH_API_URL, function( error, response, body ) {
+            api.getJson(function( json ) {
 
-                if( ! error && response.statusCode == 200 ) {
+                async.each(pendingRequests, function( request, nextRequest ) {
+                    api.checkOffer(json, request.reference, next, function( available ) {
 
-                    var data = JSON.parse( body );
+                        if( available )
+                            inform( request, next );
 
-                    async.each(pendingRequests, function( request, nextRequest ) {
-                        async.each(data.answer.availability, function( offer, nextOffer ) {
-
-                            if( offer.reference == request.reference ) {
-
-                                var availableZones = 0
-
-                                async.each(offer.zones, function( zone, nextZone ) {
-
-                                    if( zone.availability != 'unknown' && zone.availability != 'unavailable' )
-                                        availableZones++;
-
-                                    nextZone();
-
-                                }, function( err ) {
-
-                                    if( err ) { next( err ); return; }
-
-                                    if( availableZones > 0 )
-                                        inform( request, next );
-
-                                });
-
-                            }
-
-                            nextOffer();
-
-                        }, function( err ) {
-
-                            if( err ) { next( err ); return; }
-
-                            nextRequest();
-
-                        });
-
-                    }, function( err ) {
-
-                        if( err ) { next( err ); return; }
-
-                        res.send('PROCESSING REQUESTS COMPLETED !');
+                        nextRequest();
 
                     });
 
-                }
+                }, function( err ) {
+
+                    if( err ) { next( err ); return; }
+
+                    res.send('PROCESSING REQUESTS COMPLETED !');
+
+                });
 
             });
         });
@@ -70,7 +40,7 @@ exports.handleRequests = function( req, res, next ) {
 };
 
 /*
- *  Permet d'informer l'utilisateur par mail de la disponibilité d'un offre d'OVH
+ *  Permet d'informer l'utilisateur par mail de la disponibilité d'une offre d'OVH
  */
 var inform = function( request, next ) {
 

@@ -1,5 +1,6 @@
 var async        = require('async');
 var data         = require('./data');
+var api          = require('./api');
 var recaptcha    = require('./recaptcha');
 var serversModel = require('../models/servers');
 var requestModel = require('../models/requests');
@@ -76,6 +77,24 @@ exports.run = function( req, res, next ) {
                     });
 
                 },
+
+                // Vérification de la disponibilité de l'offre
+                function( callback ) {
+
+                    api.getJson(function( json ) {
+                        api.checkOffer(json, req.body.server, next, function( available ) {
+
+                            if( available )
+                                callback("L'offre " + req.body.server + " est déjà disponible, vous pouvez réserver votre serveur dès à présent.");
+                            else
+                                callback();
+
+                        });
+                    });
+
+
+                },
+
 
                 // Ajout de la demande au sein de la base de données
                 function( callback ) {
