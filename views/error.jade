@@ -1,8 +1,15 @@
 extends layout
 
 block content
-    hr
-    .alert.alert-danger!= '<strong>ERREUR ' + ( ( error.status ) ? error.status : '' ) + ' :</strong> ' + error.message
 
-    if error.stack
-        pre= '[ STACK TRACE ] ' + error.stack
+    header.portrait
+
+        .bg-line
+        .body-portrait
+            .box-note.error
+                #slider-note
+                    .carousel-inner
+                        .item.active!= '<strong>ERREUR ' + ( ( error.status ) ? error.status : '' ) + ' :</strong> ' + error.message
+
+            if error.stack
+                pre= '[ STACK TRACE ] ' + error.stack

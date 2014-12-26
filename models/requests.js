@@ -1,4 +1,5 @@
 var pg    = require('pg');
+var async = require('async');
 var error = require('../routes/errorHandler');
 
 /*
@@ -27,7 +28,7 @@ exports.add = function( data, next, callback ) {
 };
 
 /*
- *  Permet de récupérer l'ensemble des demandes en attentes ( pending )
+ *  Permet de récupérer l'ensemble des demandes en attente ( pending )
  */
 exports.getPendingRequests = function( next, callback ) {
 
@@ -63,6 +64,60 @@ exports.getRequestByToken = function( token, next, callback ) {
                 callback( result.rows[0] );
             else
                 callback( false );
+
+        });
+    });
+
+};
+
+/*
+ *  Permet de récupérer des statistiques à partir de la base de données
+ */
+exports.getStatistics = function( next, callback ) {
+
+    pg.connect(process.env.DATABASE_URL, function( err, client, done ) {
+
+        async.parallel({
+
+            // Récupération du nombre de demandes en attente
+            pendingRequests: function( callback ) {
+                client.query("SELECT count(*) as count FROM public.requests WHERE state = 'pending'", function( err, result ) {
+
+                    if( error.handler( err, client, done, next ) ) return;
+                    callback(null, result.rows[0].count);
+
+                });
+            },
+
+            // Récupération du nombre de demandes terminées
+            doneRequests: function(callback){
+                client.query("SELECT count(*) as count FROM public.requests WHERE state = 'done'", function( err, result ) {
+
+                    if( error.handler( err, client, done, next ) ) return;
+                    callback(null, result.rows[0].count);
+
+                });
+            },
+
+            // Récupération du serveur le plus demandé
+            mostRequestedServer: function(callback){
+                client.query("SELECT s.name, COUNT('r.reference') AS occurrences \
+                              FROM public.requests r \
+                              LEFT JOIN public.servers s ON s.reference = r.reference \
+                              GROUP BY s.name \
+                              ORDER BY occurrences DESC \
+                              LIMIT 1", function( err, result ) {
+
+                    if( error.handler( err, client, done, next ) ) return;
+                    callback(null, result.rows[0]);
+
+                });
+            }
+
+        }, function( err, results ) {
+
+            done();
+            callback( results );
 
         });
     });

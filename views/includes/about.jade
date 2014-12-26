@@ -1,0 +1,34 @@
+#about
+    .deviter
+    .row
+        .col-lg-12
+            h3.title.with-icon
+                i.fa.fa-bar-chart-o.icn-title
+                | STATISTIQUES
+            .box-fact-area
+                .row
+                    .col-sm-4
+                        .box-fact
+                            i.fa.fa-bell-o.icn-fixed
+                            | #{stats.pendingRequests} demandes en attente
+                    .col-sm-4
+                        .box-fact
+                            i.fa.fa-check.icn-fixed
+                            | #{stats.doneRequests} demandes terminées
+                    .col-sm-4
+                        .box-fact
+                            i.fa.fa-star-o.icn-fixed
+                            | Serveur le plus demandé : #{stats.mostRequestedServer.name} <br> ( #{stats.mostRequestedServer.occurrences} demandes )
+    .row
+        .col-lg-12
+            h3.title.with-icon
+                i.fa.fa-users.icn-title
+                | SERVICES SUPPORTÉS
+            .box-block
+                ul.list-unstyled.list-clients.clearfix
+                    li
+                        a(href='http://www.kimsufi.com')
+                            img(src='http://www.ovh.com/fr/images/serveurs-dedies-2013/logo-KS.png' alt class='img-responsive')
+                    li
+                        a(href='http://www.soyoustart.com')
+                            img(src='http://www.ovh.com/fr/images/serveurs-dedies-2013/logo-SYS.png' alt class='img-responsive')

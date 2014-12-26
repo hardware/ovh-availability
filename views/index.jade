@@ -2,49 +2,71 @@ extends layout
 
 block content
 
-    div(class='bs-callout bs-callout-info' id='info-top')
-        h4.align-center <strong>Disponibilité des offres OVH</strong>
-        hr
-        p
-            | Pour connaitre la disponibilité des offres d'OVH (SoYourStart / Kimsufi), choisissez un serveur parmis la liste ci-dessous et ajoutez votre adresse mail.
-            | Vous serez prévenu par email lorsque le serveur souhaité sera disponible.
+    header.portrait
 
-    if formSuccess
-        .alert.alert-success !{formMessage}
-    else
+        .bg-line
+        .body-portrait
+            include includes/box-note
 
-        if formError
-            .alert.alert-danger #{formMessage}
+            if formSuccess
+                .row
+                    .col-md-6.col-md-offset-3
+                        .alert.alert-success.text-center #{formMessage}
+            else
+                form(action='/' method='post' role='form')
 
-        form(action='/' method='post' class='form-horizontal' role='form')
+                    input(type='hidden' name='_csrf' value=token)
 
-            input(type='hidden' name='_csrf' value=token)
+                    if formError
+                        .row
+                            .col-md-6.col-md-offset-3
+                                .alert.alert-danger.text-center #{formMessage}
 
-            .form-group
-                label(for='server' class='col-sm-4 control-label') Liste des serveurs :
-                .col-sm-5
-                    select(class='form-control' name='server')
-                        option(value='default') Choisir...
-                        optgroup(label='Gamme SoYouStart :')
-                            for server in sysServersList
-                                option(value=server.reference) #{server.name}
-                        optgroup(label='Gamme Kimsufi :')
-                            for server in kimServersList
-                                option(value=server.reference) #{server.name}
-                    if formErrors["server"]
-                        span.help-block #{formErrors["server"]["msg"]}
+                    .row
+                        .col-md-6.col-md-offset-3
+                            .form-group
 
-            .form-group
-                label(for='mail' class='col-sm-4 control-label') Email :
-                .col-sm-5
-                    input(type='mail' name='mail' class='form-control' id='mail' placeholder='Votre adresse email')
-                    if formErrors["mail"]
-                        span.help-block #{formErrors["mail"]["msg"]}
+                                label(for='server') Liste des serveurs :
+                                select(class='form-control' name='server')
+                                    option(value='default') Choisir...
+                                    optgroup(label='Gamme SoYouStart :')
+                                        for server in sysServersList
+                                            option(value=server.reference) #{server.name}
+                                    optgroup(label='Gamme Kimsufi :')
+                                        for server in kimServersList
+                                            option(value=server.reference) #{server.name}
 
-            div(class='form-group' id='recaptcha')
-                .col-sm-offset-4.col-sm-10
-                    div(class='g-recaptcha' data-sitekey=recaptchaKey)
+                                if formErrors["server"]
+                                    span.help-block #{formErrors["server"]["msg"]}
 
-            .form-group
-                .col-sm-offset-4.col-sm-10
-                    button(type='submit' id='submit' class='btn btn-success' data-loading-text='Validation en cours...' autocomplete='off') Valider
+                    .row
+                        .col-md-6.col-md-offset-3
+                            .form-group
+
+                                label(for='mail') Adresse mail :
+                                input(type='email' name='mail' class='form-control' id='mail' placeholder='Votre adresse email')
+
+                                if formErrors["mail"]
+                                    span.help-block #{formErrors["mail"]["msg"]}
+
+                    .row
+                        .col-md-6.col-md-offset-3
+                            .form-group
+
+                                label(for='tel') Numéro de téléphone ( Optionnel ) :
+                                input(type='text' name='tel' class='form-control' id='tel' placeholder='Indisponible pour le moment' disabled)
+
+                                if formErrors["tel"]
+                                    span.help-block #{formErrors["tel"]["msg"]}
+
+                    .row
+                        .col-md-6.col-md-offset-3
+                            .form-group
+
+                                label Captcha :
+                                div(class='g-recaptcha' data-sitekey=recaptchaKey)
+
+                    .text-center
+                        button(type='submit' id='submit' class='btn btn-flat btn-lg' data-loading-text='Validation en cours...' autocomplete='off') Envoyer
+
+            include includes/about

@@ -1,0 +1,35 @@
+.portrait, .content, #backtotop{
+  box-shadow: 0 0 5px 5px rgba(0,0,0,0.1) !important;
+}
+
+.portrait {
+    text-align: left;
+}
+
+.deviter {
+    margin-top: 35px;
+}
+
+.box-block {
+    margin-bottom: 0px;
+}
+
+span.help-block {
+    color: #A94442;
+}
+
+footer a {
+    font-size:12px;
+    color:#DDD;
+}
+
+footer a:hover {
+    text-decoration: none;
+    color:#DDD;
+}
+
+pre {
+    font-size:12px;
+    white-space:pre;
+    color:firebrick;
+}

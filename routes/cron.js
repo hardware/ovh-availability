@@ -5,7 +5,7 @@ var mailer       = require('./mailer');
 var requestModel = require('../models/requests');
 
 /*
- *  Traitement de l'ensemble des demandes en attentes
+ *  Traitement de l'ensemble des demandes en attente
  *  Route : /cron/handleRequests/:secureKey
  *  Methode : GET
  */

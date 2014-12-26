@@ -10,9 +10,13 @@ html
         meta(http-equiv='X-UA-Compatible' content='IE=edge')
         meta(name='viewport' content='width=device-width, initial-scale=1')
         title=title
-        <!-- link(href="/img/icons/favicon.ico" rel="icon") -->
+
         link(href='/bower/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+        link(href='/bower/font-awesome/css/font-awesome.min.css', rel='stylesheet')
+        link(href='/font/tello/css/fontello.css', rel='stylesheet')
+        link(href='/css/animation.css', rel='stylesheet')
         link(href='/css/template.css', rel='stylesheet')
+        link(href='/css/style.css', rel='stylesheet')
 
         +ie('if lt IE 9')
             script(src='/bower/html5shiv/dist/html5shiv.js')
@@ -21,12 +25,13 @@ html
         script(src='https://www.google.com/recaptcha/api.js' async defer)
 
     body
-        .container
-            include includes/header
+        #wrapper
+            .container
+                .row
+                    .col-lg-10.col-lg-offset-1
 
-            .content
-                block content
+                        block content
 
-            include includes/footer
+                        include includes/footer
 
         include includes/javascript

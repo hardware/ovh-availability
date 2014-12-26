@@ -16,15 +16,18 @@ exports.index = function( req, res, next ) {
     data.settings(req, res, { shouldBeLogged:false, mayBeLogged:true }, function( settings ) {
 
         serversModel.getServers('sys', next, function( sysServersList ) {
-            serversModel.getServers('kimsufi', next, function( kimServersList ) {
+        serversModel.getServers('kimsufi', next, function( kimServersList ) {
+        requestModel.getStatistics(next, function( stats ) {
 
                 settings.formErrors     = {};
                 settings.sysServersList = sysServersList;
                 settings.kimServersList = kimServersList;
+                settings.stats          = stats;
 
                 res.render('index', settings);
 
-            });
+        });
+        });
         });
 
     });
@@ -41,9 +44,13 @@ exports.run = function( req, res, next ) {
     data.settings(req, res, { shouldBeLogged:false, mayBeLogged:true }, function( settings ) {
 
         // Récupération des ressources
+
+        // TODO : Implémenter une fonction qui englobe les 4 suivantes, parce que là c'est pas meugnon du tout :3
+        // C'est franchement dégeulasse même xD
         serversModel.getServers('sys', next, function( sysServersList ) {
         serversModel.getServers('kimsufi', next, function( kimServersList ) {
         serversModel.getAllRefs(next, function( refsList ) {
+        requestModel.getStatistics(next, function( stats ) {
 
             // Validation des valeurs contenues dans req.body
             req.checkBody('mail', 'La valeur de ce champ est invalide.').isEmail().len(5, 100);
@@ -140,11 +147,13 @@ exports.run = function( req, res, next ) {
                 settings.formErrors     = ( errors ) ? errors : {};
                 settings.sysServersList = sysServersList;
                 settings.kimServersList = kimServersList;
+                settings.stats          = stats;
 
                 res.render('index', settings);
 
             });
 
+        });
         });
         });
         });

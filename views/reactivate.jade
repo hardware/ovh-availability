@@ -2,8 +2,20 @@ extends layout
 
 block content
 
-    if formSuccess
-        .alert.alert-success !{formMessage}
+    header.portrait
 
-    if formError
-        .alert.alert-danger #{formMessage}
+        .bg-line
+        .body-portrait
+            if formError
+                .box-note.error
+                    #slider-note
+                        .carousel-inner
+                            .item.active #{formMessage}
+            if formSuccess
+                .box-note.success
+                    #slider-note
+                        .carousel-inner
+                            .item.active.text-center !{formMessage}
+
+            .text-center
+                button(type='button' class='btn btn-flat style2' onclick='window.location.href="/"') Retour à l'accueil
