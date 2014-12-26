@@ -1,3 +1,5 @@
+[ ![Codeship Status](https://www.codeship.io/projects/ad642cb0-6e4f-0132-b9bf-66f2bf861e14/status) ](https://www.codeship.io/projects/54318)
+
 ovh-availability v1.1.0
 =======================
 
