@@ -1,4 +1,4 @@
-ovh-availability v1.0.0
+ovh-availability v1.1.0
 =======================
 
 Application permettant de connaitre la disponibilité des serveurs d'OVH (SoYourStart, Kimsufi)
