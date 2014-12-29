@@ -1,7 +1,9 @@
 var async        = require('async');
 var crypto       = require('crypto');
+var countries    = require('country-data').countries;
+var phone        = require('phone');
 var data         = require('./data');
-var api          = require('./api');
+var api          = require('./ovhApi');
 var recaptcha    = require('./recaptcha');
 var serversModel = require('../models/servers');
 var requestModel = require('../models/requests');
@@ -19,12 +21,14 @@ exports.index = function( req, res, next ) {
         serversModel.getServers('kimsufi', next, function( kimServersList ) {
         requestModel.getStatistics(next, function( stats ) {
 
-                settings.formErrors     = {};
-                settings.sysServersList = sysServersList;
-                settings.kimServersList = kimServersList;
-                settings.stats          = stats;
+            settings.formErrors     = {};
+            settings.sysServersList = sysServersList;
+            settings.kimServersList = kimServersList;
+            settings.stats          = stats;
+            settings.countries      = countries.all
+            settings.values         = {}
 
-                res.render('index', settings);
+            res.render('index', settings);
 
         });
         });
@@ -44,19 +48,25 @@ exports.run = function( req, res, next ) {
     data.settings(req, res, { shouldBeLogged:false, mayBeLogged:true }, function( settings ) {
 
         // Récupération des ressources
-
-        // TODO : Implémenter une fonction qui englobe les 4 suivantes, parce que là c'est pas meugnon du tout :3
-        // C'est franchement dégeulasse même xD
         serversModel.getServers('sys', next, function( sysServersList ) {
         serversModel.getServers('kimsufi', next, function( kimServersList ) {
         serversModel.getAllRefs(next, function( refsList ) {
         requestModel.getStatistics(next, function( stats ) {
 
+            var invalid  = 'La valeur de ce champ est invalide.';
+            var required = 'Ce champ est requis.';
+
             // Validation des valeurs contenues dans req.body
-            req.checkBody('mail', 'La valeur de ce champ est invalide.').isEmail().len(5, 100);
-            req.checkBody('mail', 'Ce champ est requis.').notEmpty();
-            req.checkBody('server', 'La valeur de ce champ est invalide.').isIn( refsList );
-            req.checkBody('server', 'Ce champ est requis.').notEmpty();
+            req.checkBody('mail', invalid).isEmail().len(5, 100);
+            req.checkBody('mail', required).notEmpty();
+            req.checkBody('server', invalid).isIn( refsList );
+            req.checkBody('server', required).notEmpty();
+
+            if( req.body.phone )
+                req.checkBody('country', required).notEmpty();
+
+            if( req.body.country )
+                req.checkBody('phone', required).notEmpty();
 
             var errors = req.validationErrors( true );
 
@@ -69,6 +79,36 @@ exports.run = function( req, res, next ) {
                         callback("Une erreur est survenue lors de la validation du formulaire, veuillez vérifier les données saisies.");
                     else
                         callback();
+
+                },
+
+                // Validation du numéro de téléphone
+                function( callback ) {
+
+                    if( req.body.phone ) {
+
+                        var phoneNumber = phone( req.body.phone, req.body.country )[0];
+
+                        if( ! phoneNumber ) {
+
+                            callback("Votre numéro de téléphone est invalide.");
+
+                        } else {
+
+                            // Numéro de téléphone mobile au format international
+                            // Norme : UIT-T E.164 (11/2010)
+                            // Préfixe international + indicatif pays + numéro national significatif
+                            // Exemple (france) : 003361601XXXX
+                            req.session.phone = "00" + String( phoneNumber ).substring(1);
+                            callback();
+
+                        }
+
+                    } else {
+
+                        callback();
+
+                    }
 
                 },
 
@@ -110,10 +150,13 @@ exports.run = function( req, res, next ) {
                         var data = {
                             reference:req.body.server,
                             mail:req.body.mail,
-                            token:buffer.toString('hex')
+                            token:buffer.toString('hex'),
+                            phone: ( req.session.phone ) ? req.session.phone : null
                         };
 
                         requestModel.add(data, next, function( result ) {
+
+                            if( req.session.phone ) delete req.session.phone;
 
                             if( result ) {
 
@@ -148,6 +191,8 @@ exports.run = function( req, res, next ) {
                 settings.sysServersList = sysServersList;
                 settings.kimServersList = kimServersList;
                 settings.stats          = stats;
+                settings.countries      = countries.all
+                settings.values         = req.body
 
                 res.render('index', settings);
 

@@ -14,6 +14,32 @@
     margin-bottom: 0px;
 }
 
+.ui-autocomplete {
+    padding: 0;
+    list-style: none;
+    background-color: #fff;
+    width: 218px;
+    border: 1px solid #B0BECA;
+    max-height: 350px;
+    overflow-x: hidden;
+}
+
+.ui-autocomplete .ui-menu-item {
+    border-top: 1px solid #B0BECA;
+    display: block;
+    padding: 4px 6px;
+    color: #353D44;
+    cursor: pointer;
+}
+
+.ui-autocomplete .ui-menu-item:first-child {
+    border-top: none;
+}
+
+.ui-autocomplete .ui-menu-item.ui-state-focus {
+    background-color: #63A4B5;
+}
+
 span.help-block {
     color: #A94442;
 }

@@ -11,6 +11,7 @@ Application permettant de connaitre la disponibilité des serveurs d'OVH (SoYour
 git clone https://github.com/hardware/ovh-availability.git
 npm install
 bower update
+# Ne pas oublier de modifier la valeur de "DATABASE_URL" dans tous les fichiers migrations/*.js
 migrate up
 ```
 
@@ -28,6 +29,12 @@ CRON_KEY=...
 COOKIES_SECRET=...
 SESSION_SECRET=...
 OVH_API_URL=https://ws.ovh.com/dedicated/r2/ws.dispatcher/getAvailability2
+
+# OVH API CREDENTIALS (SMS)
+# https://eu.api.ovh.com/createToken/?GET=/sms/&GET=/sms/*/jobs/&POST=/sms/*/jobs/
+OVH_APP_KEY=...
+OVH_APP_SEC=...
+OVH_CON_KEY=...
 ```
 
 ### Lancement de l'application

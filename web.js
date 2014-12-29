@@ -10,8 +10,9 @@ var validator    = require('express-validator');
 var csrf         = require('csurf');
 var errorHandler = require('errorhandler');
 
-var routes     = require('./routes');
-var cron       = require('./routes/cron');
+var routes = require('./routes');
+var cron   = require('./routes/cron');
+var api    = require('./routes/ovhApi');
 
 var app = express();
 
@@ -41,6 +42,13 @@ app.use(function( req, res, next ) {
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Initialisation de l'API d'OVH
+app.use(function( req, res, next ) {
+    api.init(req, res, next, function() {
+        next();
+    });
+});
 
 /*
  *  ROUTES

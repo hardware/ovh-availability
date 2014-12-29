@@ -27,14 +27,14 @@ block content
                             .form-group
 
                                 label(for='server') Liste des serveurs :
-                                select(class='form-control' name='server')
-                                    option(value='default') Choisir...
+                                select(class='form-control' name='server' placeholder='Saisir le nom du serveur')
+                                    option()
                                     optgroup(label='Gamme SoYouStart :')
                                         for server in sysServersList
-                                            option(value=server.reference) #{server.name}
+                                            option(value=server.reference selected=values.server == server.reference) #{server.name}
                                     optgroup(label='Gamme Kimsufi :')
                                         for server in kimServersList
-                                            option(value=server.reference) #{server.name}
+                                            option(value=server.reference selected=values.server == server.reference) #{server.name}
 
                                 if formErrors["server"]
                                     span.help-block #{formErrors["server"]["msg"]}
@@ -44,7 +44,7 @@ block content
                             .form-group
 
                                 label(for='mail') Adresse mail :
-                                input(type='email' name='mail' class='form-control' id='mail' placeholder='Votre adresse email')
+                                input(type='text' name='mail' class='form-control' id='mail' placeholder='Votre adresse email' value=values.mail)
 
                                 if formErrors["mail"]
                                     span.help-block #{formErrors["mail"]["msg"]}
@@ -53,11 +53,24 @@ block content
                         .col-md-6.col-md-offset-3
                             .form-group
 
-                                label(for='tel') Numéro de téléphone ( Optionnel ) :
-                                input(type='text' name='tel' class='form-control' id='tel' placeholder='Indisponible pour le moment' disabled)
+                                label(for='phone') Numéro de téléphone ( optionnel ) :
+                                input(type='text' name='phone' class='form-control' id='tel' placeholder='Exemple : 06XXXXXXXX' data-toggle='popover' title='Information' data-placement="bottom" data-content='Entrez simplement votre numéro de téléphone habituel, il sera préfixé automatiquement à partir du nom de votre pays' value=values.phone)
 
-                                if formErrors["tel"]
-                                    span.help-block #{formErrors["tel"]["msg"]}
+                                if formErrors["phone"]
+                                    span.help-block #{formErrors["phone"]["msg"]}
+
+                    .row
+                        .col-md-6.col-md-offset-3
+                            .form-group
+
+                                label(for='country') Pays ( optionnel ) :
+                                select(class='form-control' name='country' placeholder='Saisir le nom de votre pays')
+                                    option()
+                                    for country in countries
+                                        option(value=country.alpha2 selected=values.country == country.alpha2) #{country.name}
+
+                                if formErrors["country"]
+                                    span.help-block #{formErrors["country"]["msg"]}
 
                     .row
                         .col-md-6.col-md-offset-3

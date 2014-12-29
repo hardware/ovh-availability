@@ -13,6 +13,7 @@
     "bower": "1.3.x",
     "compression": "1.1.x",
     "cookie-parser": "1.3.x",
+    "country-data": "0.0.16",
     "csurf": "1.6.x",
     "db-migrate": "0.8.x",
     "debug": "2.x",
@@ -24,7 +25,9 @@
     "migrate": "^0.1.6",
     "morgan": "1.3.x",
     "optimist": "0.6.x",
+    "ovh": "^1.1.2",
     "pg": "3.4.x",
+    "phone": "^1.0.3",
     "request": "2.x",
     "sendgrid": "1.2.x",
     "string": "2.1.x"

@@ -1,6 +1,6 @@
 var async        = require('async');
 var request      = require('request');
-var api          = require('./api');
+var api          = require('./ovhApi');
 var mailer       = require('./mailer');
 var requestModel = require('../models/requests');
 
@@ -19,7 +19,7 @@ exports.handleRequests = function( req, res, next ) {
                     api.checkOffer(json, request.reference, next, function( available ) {
 
                         if( available )
-                            inform( request, next );
+                            inform( res, request, next );
 
                         nextRequest();
 
@@ -40,9 +40,9 @@ exports.handleRequests = function( req, res, next ) {
 };
 
 /*
- *  Permet d'informer l'utilisateur par mail de la disponibilité d'une offre d'OVH
+ *  Permet d'informer l'utilisateur par mail et par SMS de la disponibilité d'une offre d'OVH
  */
-var inform = function( request, next ) {
+var inform = function( res, request, next ) {
 
     var orderUrl = ''
 
@@ -68,7 +68,12 @@ var inform = function( request, next ) {
               <p>A très bientôt sur ovh-availability</p>"
     };
 
+    // Envoi du mail de notification
     mailer.send( payload, next );
+
+    if( request.phone )
+        // Envoi du sms de notification
+        api.sendSms( res, request.name, request.phone, next );
 
     // Mise à jour de l'état de la demande ( pending -> done )
     requestModel.updateState( 'done', request.id, next );
