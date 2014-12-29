@@ -12,6 +12,13 @@ block content
                         .carousel-inner
                             .item.active #{formMessage}
             if formSuccess
+
+                if ! request.phone
+                    .box-note.warning
+                        #slider-note
+                            .carousel-inner
+                                .item.active.text-center Vous n'avez pas saisi de numéro de téléphone lors de votre première demande, vous devriez peut-être le faire pour ne pas rater l'offre une seconde fois.
+
                 .box-note.success
                     #slider-note
                         .carousel-inner

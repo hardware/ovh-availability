@@ -266,6 +266,7 @@ exports.reactivate = function( req, res, next ) {
 
                     settings.formSuccess = true;
                     settings.formMessage = 'Votre demande a bien été réactivée.';
+                    settings.request     = request;
 
                 }
 

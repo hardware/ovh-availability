@@ -84,16 +84,18 @@ body h6 {
   padding: 10px 15px;
   color: white;
   border-radius: 10px;
+  font-size:15px;
 }
 .portrait .box-note.success {
   color: #3C763D;
   background-color: #DFF0D8;
   border-color: #D6E9C6;
-  font-size:15px;
 }
 .portrait .box-note.error {
   background: #BA4E4E;
-  font-size:15px;
+}
+.portrait .box-note.warning {
+  background: #F0AD4E;
 }
 .portrait .box-note:after {
   content: "";
@@ -110,6 +112,9 @@ body h6 {
 }
 .portrait .box-note.error:after {
   border-top: 10px solid #BA4E4E;
+}
+.portrait .box-note.warning:after {
+  border-top: 10px solid #FFF;
 }
 .portrait .portrait-img-area {
   width: 160px;
