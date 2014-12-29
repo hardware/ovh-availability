@@ -54,6 +54,10 @@ footer a:hover {
     color:#DDD;
 }
 
+footer span {
+    margin: 0 5px;
+}
+
 pre {
     font-size:12px;
     white-space:pre;
