@@ -18,8 +18,12 @@ exports.handleRequests = function( req, res, next ) {
                 async.each(pendingRequests, function( request, nextRequest ) {
                     api.checkOffer(json, request.reference, next, function( available ) {
 
-                        if( available )
+                        if( available ) {
+
+                            console.log(request.name + " is available");
                             inform( res, request, next );
+
+                        }
 
                         nextRequest();
 
