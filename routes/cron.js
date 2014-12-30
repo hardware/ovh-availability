@@ -57,7 +57,7 @@ var inform = function( res, request, next ) {
 
     var payload = {
         to:request.mail,
-        from:'nepasrepondre@ovh-availability',
+        from:'nepasrepondre@availability.ovh',
         subject:'[ovh-availability] Votre serveur est disponible ( ' + request.name + ' )',
         html:"<p>Bonjour,</p> \
               <p>Le serveur " + request.name + " est disponible.</p> \
