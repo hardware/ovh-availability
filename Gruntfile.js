@@ -65,12 +65,14 @@ module.exports = function(grunt) {
   // Tâche par défaut ( compilation automatique )
   grunt.registerTask('default', ['watch']);
 
-  // Tâche lancée lors du déploiement en prod
   grunt.registerTask('run', [
     'bower:install',
     'shell:migrate',
     'uglify:compile',
     'cssmin:compile'
   ]);
+
+  // Tâche lancée lors du déploiement en prod
+  grunt.registerTask('heroku:production', 'run');
 
 };
