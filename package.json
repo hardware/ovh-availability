@@ -4,8 +4,7 @@
   "description": "Application permettant de connaitre la disponibilité des serveurs d'OVH (SoYourStart, Kimsufi)",
   "main": "web.js",
   "scripts": {
-    "start": "node web.js",
-    "postinstall": "./node_modules/grunt-cli/bin/grunt run"
+    "start": "node web.js"
   },
   "dependencies": {
     "async": "0.x",
