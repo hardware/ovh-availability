@@ -6,6 +6,13 @@ module.exports = function(grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
+    jshint: {
+      options: {
+        jshintrc: '.jshintrc'
+      },
+      lint: ['web.js', 'Gruntfile.js', 'routes/*.js', 'models/*.js', 'migrations/*.js']
+    },
+
     bower: {
       options: {
         targetDir:'public/bower'
@@ -50,6 +57,10 @@ module.exports = function(grunt) {
     },
 
     watch: {
+      lint: {
+        files:['web.js', 'Gruntfile.js', 'routes/*.js', 'models/*.js', 'migrations/*.js'],
+        tasks:['jshint:lint']
+      },
       scripts: {
         files:['public/js/*.js'],
         tasks:['uglify:compile']
@@ -66,6 +77,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['watch']);
 
   grunt.registerTask('run', [
+    'jshint:lint',
     'bower:install',
     'shell:migrate',
     'uglify:compile',
@@ -74,6 +86,7 @@ module.exports = function(grunt) {
 
   // Tâche lancée lors du déploiement en prod
   grunt.registerTask('heroku:production', [
+    'jshint:lint',
     'bower:install',
     'uglify:compile',
     'cssmin:compile'
