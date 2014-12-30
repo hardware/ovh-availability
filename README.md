@@ -14,6 +14,18 @@ cd ovh-availability
 npm install
 ```
 
+Après l'installation des modules, modifier la variable `DATABASE_URL` dans chaque fichier de migration `migrations/*.js` par exemple :
+
+```nodejs
+postgres://user:password@host:port/bddname
+```
+
+Puis lancer Grunt pour vérifier le code, installer les dépendances de bower, exécuter les migrations de la base de données et compiler les assets :
+
+```bash
+grunt run
+```
+
 Ajouter les variables d'environnement dans un fichier nommé `.env` à la racine du projet :
 
 ```ini
@@ -30,7 +42,7 @@ SESSION_SECRET=...
 OVH_API_URL=https://ws.ovh.com/dedicated/r2/ws.dispatcher/getAvailability2
 ```
 
-Pour faire fonctionner l'envoi de SMS, il faut générer les credentials via [cette page](https://eu.api.ovh.com/createToken/?GET=/sms/&GET=/sms/*/jobs/&POST=/sms/*/jobs/)
+Pour faire fonctionner l'envoi de SMS, il faut générer les credentials via [cette page](https://eu.api.ovh.com/createToken/?GET=/sms/&GET=/sms/*/jobs/&POST=/sms/*/jobs/).
 
 Puis les mettre dans le fichier `.env` :
 
