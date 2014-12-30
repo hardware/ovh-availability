@@ -73,6 +73,10 @@ module.exports = function(grunt) {
   ]);
 
   // Tâche lancée lors du déploiement en prod
-  grunt.registerTask('heroku:production', 'run');
+  grunt.registerTask('heroku:production', [
+    'bower:install',
+    'uglify:compile',
+    'cssmin:compile'
+  ]);
 
 };
