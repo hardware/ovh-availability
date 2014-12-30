@@ -126,6 +126,20 @@ exports.run = function( req, res, next ) {
 
                 },
 
+                // Vérification de l'unicité de la demande
+                function( callback ) {
+
+                    requestModel.unique({ ref:req.body.server, mail:req.body.mail }, next, function( unique ) {
+
+                        if( ! unique )
+                            callback("Votre demande est toujours en attente, vous ne pouvez pas en créer plusieurs à la fois. Merci d'attendre de recevoir la notification par mail / SMS.");
+                        else
+                            callback();
+
+                    });
+
+                },
+
                 // Vérification de la disponibilité de l'offre
                 function( callback ) {
 

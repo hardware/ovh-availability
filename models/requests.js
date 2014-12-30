@@ -28,6 +28,29 @@ exports.add = function( data, next, callback ) {
 };
 
 /*
+ *  Permet de vérifier l'unicité d'une demande
+ */
+exports.unique = function( data, next, callback ) {
+
+    pg.connect(process.env.DATABASE_URL, function( err, client, done ) {
+        client.query("SELECT * FROM public.requests WHERE reference = $1 AND mail = $2 AND state = $3 LIMIT 1",
+
+            [ data.ref, data.mail, 'pending' ], function( err, result ) {
+
+            if( error.handler( err, client, done, next ) ) return;
+            done();
+
+            if( result.rowCount == 1 )
+                callback( false );
+            else
+                callback( true );
+
+        });
+    });
+
+};
+
+/*
  *  Permet de récupérer l'ensemble des demandes en attente ( pending )
  */
 exports.getPendingRequests = function( next, callback ) {
