@@ -2,6 +2,8 @@ node_modules
 bower
 build
 Procfile_dev
+public/css/dest/*
+public/js/dest/*
 
 *~
 *.log
