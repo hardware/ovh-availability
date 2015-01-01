@@ -103,6 +103,10 @@ exports.sendSms = function( res, offer, phone, next ) {
             return;
         }
 
+        // Si des numéros sont invalides même après validation de l'app, on log
+        // Raison possible : numéro non pris en charge par l'api d'OVH
+        if( result.invalidReceivers.length > 0 ) console.log("Invalid receivers : " + result.invalidReceivers);
+
     });
 
 };
