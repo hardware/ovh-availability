@@ -10,7 +10,7 @@
                     .col-sm-4
                         .box-fact
                             i.fa.fa-bell-o.icn-fixed
-                            | #{stats.pendingRequests} demandes en attente
+                            | #{stats.pendingRequests} demande(s) en attente
                     .col-sm-4
                         .box-fact
                             i.fa.fa-check.icn-fixed
@@ -18,7 +18,11 @@
                     .col-sm-4
                         .box-fact
                             i.fa.fa-star-o.icn-fixed
-                            | Serveur le plus demandé : #{stats.mostRequestedServer.name} <br> ( #{stats.mostRequestedServer.occurrences} demandes )
+                            | Serveurs les plus demandés :
+                            ul
+                                for mostRequestedServer in stats.mostRequestedServers
+                                    li #{mostRequestedServer.name} ( #{mostRequestedServer.occurrences} demandes )
+
     .row
         .col-lg-12
             h3.title.with-icon

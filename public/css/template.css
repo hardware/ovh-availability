@@ -40,6 +40,22 @@
     background-color: #63A4B5;
 }
 
+ul {
+    list-style-type: none;
+    padding: 0px;
+    margin-top: 5px;
+}
+
+ul li {
+    padding-left: 10px;
+    margin: 0px;
+}
+
+ul li:before {
+    content: '- ';
+}
+
+
 span.help-block {
     color: #A94442;
 }

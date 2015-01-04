@@ -122,17 +122,17 @@ exports.getStatistics = function( next, callback ) {
                 });
             },
 
-            // Récupération du serveur le plus demandé
-            mostRequestedServer: function(callback){
+            // Récupération des 3 serveurs les plus demandés
+            mostRequestedServers: function(callback){
                 client.query("SELECT s.name, COUNT('r.reference') AS occurrences \
                               FROM public.requests r \
                               LEFT JOIN public.servers s ON s.reference = r.reference \
                               GROUP BY s.name \
                               ORDER BY occurrences DESC \
-                              LIMIT 1", function( err, result ) {
+                              LIMIT 3", function( err, result ) {
 
                     if( error.handler( err, client, done, next ) ) return;
-                    callback(null, result.rows[0]);
+                    callback(null, result.rows);
 
                 });
             }
