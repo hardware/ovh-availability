@@ -16,24 +16,18 @@ var requestModel = require('../models/requests');
 exports.index = function( req, res, next ) {
 
     data.settings(req, res, { shouldBeLogged:false, mayBeLogged:true }, function( settings ) {
-
-        serversModel.getServers('sys', next, function( sysServersList ) {
-        serversModel.getServers('kimsufi', next, function( kimServersList ) {
-        requestModel.getStatistics(next, function( stats ) {
+        loadResources(next, function( ressources ) {
 
             settings.formErrors     = {};
-            settings.sysServersList = sysServersList;
-            settings.kimServersList = kimServersList;
-            settings.stats          = stats;
+            settings.sysServersList = ressources.sysServersList;
+            settings.kimServersList = ressources.kimServersList;
+            settings.stats          = ressources.stats;
             settings.countries      = countries.all
             settings.values         = {}
 
             res.render('index', settings);
 
         });
-        });
-        });
-
     });
 
 };
@@ -46,12 +40,7 @@ exports.index = function( req, res, next ) {
 exports.run = function( req, res, next ) {
 
     data.settings(req, res, { shouldBeLogged:false, mayBeLogged:true }, function( settings ) {
-
-        // Récupération des ressources
-        serversModel.getServers('sys', next, function( sysServersList ) {
-        serversModel.getServers('kimsufi', next, function( kimServersList ) {
-        serversModel.getAllRefs(next, function( refsList ) {
-        requestModel.getStatistics(next, function( stats ) {
+        loadResources(next, function( ressources ) {
 
             var invalid  = 'La valeur de ce champ est invalide.';
             var required = 'Ce champ est requis.';
@@ -59,7 +48,7 @@ exports.run = function( req, res, next ) {
             // Validation des valeurs contenues dans req.body
             req.checkBody('mail', invalid).isEmail().len(5, 100);
             req.checkBody('mail', required).notEmpty();
-            req.checkBody('server', invalid).isIn( refsList );
+            req.checkBody('server', invalid).isIn( ressources.refsList );
             req.checkBody('server', required).notEmpty();
 
             if( req.body.phone )
@@ -202,9 +191,9 @@ exports.run = function( req, res, next ) {
                 }
 
                 settings.formErrors     = ( errors ) ? errors : {};
-                settings.sysServersList = sysServersList;
-                settings.kimServersList = kimServersList;
-                settings.stats          = stats;
+                settings.sysServersList = ressources.sysServersList;
+                settings.kimServersList = ressources.kimServersList;
+                settings.stats          = ressources.stats;
                 settings.countries      = countries.all
                 settings.values         = req.body
 
@@ -212,9 +201,6 @@ exports.run = function( req, res, next ) {
 
             });
 
-        });
-        });
-        });
         });
 
     });
@@ -290,4 +276,54 @@ exports.reactivate = function( req, res, next ) {
 
         });
     });
+};
+
+/*
+ *  Charge toutes les ressources de manière asynchrone
+ */
+var loadResources = function( next, callback ) {
+
+    async.parallel({
+
+        // Liste des serveurs Kimsufi
+        sysServersList: function( callback ) {
+            serversModel.getServers('sys', next, function( sysServersList ) {
+                callback(null, sysServersList);
+            });
+        },
+
+        // Liste des serveurs SoYouStart
+        kimServersList: function( callback ) {
+            serversModel.getServers('kimsufi', next, function( kimServersList ) {
+                callback(null, kimServersList);
+            });
+        },
+
+        // Liste des références OVH
+        refsList: function( callback ) {
+            serversModel.getAllRefs(next, function( refsList ) {
+                callback(null, refsList);
+            });
+        },
+
+        // Statistiques
+        stats: function( callback ) {
+            requestModel.getStatistics(next, function( stats ) {
+                callback(null, stats);
+            });
+        }
+
+    }, function( err, resources ) {
+
+        if( err ) {
+
+            next( err );
+            return;
+
+        }
+
+        callback( resources );
+
+    });
+
 };

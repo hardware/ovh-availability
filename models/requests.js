@@ -137,10 +137,10 @@ exports.getStatistics = function( next, callback ) {
                 });
             }
 
-        }, function( err, results ) {
+        }, function( err, stats ) {
 
             done();
-            callback( results );
+            callback( stats );
 
         });
     });
