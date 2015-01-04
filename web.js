@@ -5,6 +5,7 @@ var logger       = require('morgan');
 var compression  = require('compression');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
+var serveStatic  = require('serve-static');
 var session      = require('express-session');
 var validator    = require('express-validator');
 var csrf         = require('csurf');
@@ -41,7 +42,7 @@ app.use(function( req, res, next ) {
     next();
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(serveStatic(path.join(__dirname, 'public'), { maxAge:31536000 }))
 
 // Initialisation de l'API d'OVH
 app.use(function( req, res, next ) {

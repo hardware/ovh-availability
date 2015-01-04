@@ -30,6 +30,7 @@
     "phone": "^1.0.3",
     "request": "2.x",
     "sendgrid": "1.2.x",
+    "serve-static": "^1.7.2",
     "string": "2.1.x"
   },
   "devDependencies": {
