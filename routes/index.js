@@ -16,7 +16,7 @@ var requestModel = require('../models/requests');
 exports.index = function( req, res, next ) {
 
     data.settings(req, res, { shouldBeLogged:false, mayBeLogged:true }, function( settings ) {
-        loadResources(next, function( ressources ) {
+        loadResources({ refs:false }, next, function( ressources ) {
 
             settings.formErrors     = {};
             settings.sysServersList = ressources.sysServersList;
@@ -40,7 +40,7 @@ exports.index = function( req, res, next ) {
 exports.run = function( req, res, next ) {
 
     data.settings(req, res, { shouldBeLogged:false, mayBeLogged:true }, function( settings ) {
-        loadResources(next, function( ressources ) {
+        loadResources({ refs:true }, next, function( ressources ) {
 
             var invalid  = 'La valeur de ce champ est invalide.';
             var required = 'Ce champ est requis.';
@@ -281,7 +281,7 @@ exports.reactivate = function( req, res, next ) {
 /*
  *  Charge toutes les ressources de manière asynchrone
  */
-var loadResources = function( next, callback ) {
+var loadResources = function( options, next, callback ) {
 
     async.parallel({
 
@@ -301,9 +301,19 @@ var loadResources = function( next, callback ) {
 
         // Liste des références OVH
         refsList: function( callback ) {
-            serversModel.getAllRefs(next, function( refsList ) {
-                callback(null, refsList);
-            });
+
+            if( options.refs ) {
+
+                serversModel.getAllRefs(next, function( refsList ) {
+                    callback(null, refsList);
+                });
+
+            } else {
+
+                callback();
+
+            }
+
         },
 
         // Statistiques
