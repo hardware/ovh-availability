@@ -16,7 +16,6 @@
     "csurf": "1.6.x",
     "db-migrate": "0.8.x",
     "debug": "2.x",
-    "errorhandler": "1.2.x",
     "express": "4.9.x",
     "express-session": "1.8.x",
     "express-validator": "2.6.x",

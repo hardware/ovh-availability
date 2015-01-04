@@ -9,7 +9,11 @@ block content
             .box-note.error
                 #slider-note
                     .carousel-inner
-                        .item.active!= '<strong>ERREUR ' + ( ( error.status ) ? error.status : '' ) + ' :</strong> ' + error.message
+                        .item.active!= '<strong>Erreur ' + statusCode + '</strong> - ' + message
+
+            .text-center
+                button(type='button' class='btn btn-flat style2' onclick='window.location.href="/"') Retour à l'accueil
 
             if error.stack
+                .deviter
                 pre= '[ STACK TRACE ] ' + error.stack

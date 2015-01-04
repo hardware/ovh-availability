@@ -13,7 +13,7 @@ exports.handleRequests = function( req, res, next ) {
 
     checkSecureKey(req, res, req.params.secureKey, function() {
         requestModel.getPendingRequests(next, function( pendingRequests ) {
-            api.getJson(function( json ) {
+            api.getJson(next, function( json ) {
 
                 async.each(pendingRequests, function( request, nextRequest ) {
                     api.checkOffer(json, request.reference, next, function( available ) {

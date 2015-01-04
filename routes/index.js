@@ -132,7 +132,7 @@ exports.run = function( req, res, next ) {
                 // Vérification de la disponibilité de l'offre
                 function( callback ) {
 
-                    api.getJson(function( json ) {
+                    api.getJson(next, function( json ) {
                         api.checkOffer(json, req.body.server, next, function( available ) {
 
                             if( available )

@@ -9,16 +9,16 @@ var ovh = require('ovh')({
 
 });
 
-/* Récupère le nom du service de SMS et le stock localement */
+/*
+ *  Récupère le nom du service de SMS et le stock localement
+ */
 exports.init = function( req, res, next, callback ) {
 
     ovh.request('GET', '/sms/', function( err, serviceName ) {
 
         if( err ) {
-
-            next( "OVH API Error : " + err );
+            next( new Error("OVH API Error : " + err) );
             return;
-
         }
 
         res.locals.sms = {
@@ -34,16 +34,17 @@ exports.init = function( req, res, next, callback ) {
 /*
  *  Permet de récupérer les données de l'API d'OVH au format JSON
  */
-exports.getJson = function( callback ) {
+exports.getJson = function( next, callback ) {
 
-    request(process.env.OVH_API_URL, function( error, response, body ) {
+    request(process.env.OVH_API_URL, function( err, response, body ) {
 
-        if( ! error && response.statusCode == 200 ) {
-
-            var json = JSON.parse( body );
-            callback( json );
-
+        if( err || response.statusCode != 200 ) {
+            next( new Error("OVH API - Request failed") );
+            return;
         }
+
+        var json = JSON.parse( body );
+        callback( json );
 
     });
 
@@ -98,8 +99,7 @@ exports.sendSms = function( res, offer, phone, next ) {
     }, function( err, result ) {
 
         if( err ) {
-
-            next( "SMS send error : " + err );
+            next( new Error("SMS sending error : " + err) );
             return;
         }
 

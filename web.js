@@ -10,7 +10,6 @@ var serveStatic  = require('serve-static');
 var session      = require('express-session');
 var validator    = require('express-validator');
 var csrf         = require('csurf');
-var errorHandler = require('errorhandler');
 
 var routes = require('./routes');
 var cron   = require('./routes/cron');
@@ -44,9 +43,7 @@ app.use(function( req, res, next ) {
 });
 
 function setHeaders( res, path, stat ) {
-
   res.setHeader('Expires', new Date(Date.now() + ms('1y')).toUTCString());
-
 }
 
 app.use(serveStatic(path.join(__dirname, 'public'), { maxAge:ms('1y'), setHeaders:setHeaders }));
@@ -70,10 +67,6 @@ app.get('/request/reactivate/:token', routes.reactivate);
 // CRON
 app.get('/cron/handleRequests/:secureKey', cron.handleRequests);
 
-if(app.get('env') == 'development') {
-    app.use(errorHandler());
-}
-
 /*
  *  ERREUR 404
  */
@@ -86,8 +79,39 @@ app.use(function( req, res, next ) {
 /*
  *  TOUTES LES AUTRES ERREURS
  */
+
+// Dev
+if (app.get('env') === 'development') {
+
+    app.use(function( err, req, res, next ) {
+
+        var statusCode = ( err.status || 500 );
+
+        res.status( statusCode );
+        res.render('error', {
+            title:'Erreur',
+            error:err,
+            message: err.message,
+            statusCode:statusCode
+        });
+
+    });
+
+}
+
+// Prod
 app.use(function( err, req, res, next ) {
-    res.render('error', { title:'Erreur', error:err });
+
+    var statusCode = ( err.status || 500 );
+
+    res.status( statusCode );
+    res.render('error', {
+        title:'Erreur',
+        error:{},
+        message: err.message,
+        statusCode:statusCode
+    });
+
 });
 
 var server = app.listen(app.get('port'), function() {

@@ -41,7 +41,7 @@ exports.send = function( email, next ) {
             sendgrid.send(email, function( err, json ) {
 
                 if( err )
-                    next(new Error("Une erreur est survenue pendant l'exécution du module de mail [ " + err + " ]"));
+                    next( new Error("Une erreur est survenue pendant l'exécution du module de mail [ " + err + " ]") );
 
             });
 
