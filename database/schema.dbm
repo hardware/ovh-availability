@@ -33,6 +33,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="state" not-null="true" default-value="'pending'">
 		<type name="public.request_state"/>
 	</column>
+	<column name="token" not-null="true">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="phone">
+		<type name="character varying" length="20"/>
+	</column>
 	<constraint name="id_requests_pm" type="pk-constr" factor="10" table="public.requests">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
