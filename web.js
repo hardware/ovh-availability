@@ -1,6 +1,7 @@
 var express      = require('express');
 var http         = require('http');
 var path         = require('path');
+var ms           = require('ms');
 var logger       = require('morgan');
 var compression  = require('compression');
 var cookieParser = require('cookie-parser');
@@ -42,7 +43,13 @@ app.use(function( req, res, next ) {
     next();
 });
 
-app.use(serveStatic(path.join(__dirname, 'public'), { maxAge:31536000 }))
+function setHeaders( res, path, stat ) {
+
+  res.setHeader('Expires', new Date(Date.now() + ms('1y')).toUTCString());
+
+}
+
+app.use(serveStatic(path.join(__dirname, 'public'), { maxAge:ms('1y'), setHeaders:setHeaders }));
 
 // Initialisation de l'API d'OVH
 app.use(function( req, res, next ) {
