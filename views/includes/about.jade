@@ -19,7 +19,7 @@
                         .box-fact
                             i.fa.fa-star-o.icn-fixed
                             | Serveurs les plus demandés :
-                            ul
+                            ul.serverList
                                 for mostRequestedServer in stats.mostRequestedServers
                                     li #{mostRequestedServer.name} ( #{mostRequestedServer.occurrences} demandes )
 
