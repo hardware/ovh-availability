@@ -39,6 +39,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="phone">
 		<type name="character varying" length="20"/>
 	</column>
+	<column name="pushbullet_token">
+		<type name="character varying" length="255"/>
+	</column>
 	<constraint name="id_requests_pm" type="pk-constr" factor="10" table="public.requests">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>

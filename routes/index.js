@@ -3,7 +3,7 @@ var crypto       = require('crypto');
 var countries    = require('country-data').countries;
 var phone        = require('phone');
 var data         = require('./data');
-var api          = require('./ovhApi');
+var ovh          = require('./ovhApi');
 var recaptcha    = require('./recaptcha');
 var serversModel = require('../models/servers');
 var requestModel = require('../models/requests');
@@ -22,8 +22,11 @@ exports.index = function( req, res, next ) {
             settings.sysServersList = ressources.sysServersList;
             settings.kimServersList = ressources.kimServersList;
             settings.stats          = ressources.stats;
-            settings.countries      = countries.all
-            settings.values         = {}
+            settings.countries      = countries.all;
+            settings.pushbullet     = ( req.session.pushbullet.token ) ? true : false;
+            settings.values         = {
+                mail: ( settings.pushbullet ) ? req.session.pushbullet.email : null
+            };
 
             res.render('index', settings);
 
@@ -132,8 +135,8 @@ exports.run = function( req, res, next ) {
                 // Vérification de la disponibilité de l'offre
                 function( callback ) {
 
-                    api.getJson(next, function( json ) {
-                        api.checkOffer(json, req.body.server, next, function( available ) {
+                    ovh.getJson(next, function( json ) {
+                        ovh.checkOffer(json, req.body.server, next, function( available ) {
 
                             if( available )
                                 callback("Cette offre est déjà disponible, vous pouvez réserver votre serveur dès à présent.");
@@ -154,7 +157,8 @@ exports.run = function( req, res, next ) {
                             reference:req.body.server,
                             mail:req.body.mail,
                             token:buffer.toString('hex'),
-                            phone: ( req.session.phone ) ? req.session.phone : null
+                            phone: ( req.session.phone ) ? req.session.phone : null,
+                            pushbulletToken: ( req.session.pushbullet.token ) ? req.session.pushbullet.token : null
                         };
 
                         requestModel.add(data, next, function( result ) {
@@ -194,8 +198,9 @@ exports.run = function( req, res, next ) {
                 settings.sysServersList = ressources.sysServersList;
                 settings.kimServersList = ressources.kimServersList;
                 settings.stats          = ressources.stats;
-                settings.countries      = countries.all
-                settings.values         = req.body
+                settings.countries      = countries.all;
+                settings.pushbullet     = ( req.session.pushbullet.token ) ? true : false;
+                settings.values         = req.body;
 
                 res.render('index', settings);
 

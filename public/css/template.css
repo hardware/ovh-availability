@@ -1,3 +1,26 @@
+.col-md-3 {
+    width: 22%;
+}
+
+.col-md-offset-4 {
+    margin-left: 32.333%;
+}
+
+.col-md-offset-5 {
+    margin-left: 41.667%;
+}
+
+.thumbnail {
+    padding: 0px;
+    width:127px;
+    min-width: 127px;
+    max-width: 127px;
+}
+
+.thumbnail span.label {
+    margin-left:6px;
+}
+
 .portrait, .content, #backtotop{
     box-shadow: 0 0 5px 5px rgba(0,0,0,0.1) !important;
 }
@@ -38,6 +61,15 @@
 
 .ui-autocomplete .ui-menu-item.ui-state-focus {
     background-color: #63A4B5;
+}
+
+.g-recaptcha {
+    margin-top:25px;
+}
+
+.box-note a {
+    color: #FFF;
+    font-weight: 700;
 }
 
 ul.serverList {

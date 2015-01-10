@@ -14,6 +14,7 @@ var csrf         = require('csurf');
 var routes = require('./routes');
 var cron   = require('./routes/cron');
 var api    = require('./routes/ovhApi');
+var oauth  = require('./routes/oauth');
 
 var app = express();
 
@@ -37,8 +38,10 @@ app.use(session({ secret: process.env.SESSION_SECRET, key: 'SID', resave:true, s
 app.use(csrf());
 
 app.use(function( req, res, next ) {
-    res.locals.token        = req.csrfToken();
-    res.locals.recaptchaKey = process.env.RECAPTCHA_PUBLIC_KEY;
+    res.locals.token         = req.csrfToken();
+    res.locals.recaptchaKey  = process.env.RECAPTCHA_PUBLIC_KEY;
+    res.locals.pushbulletKey = process.env.PUSHBULLET_PUBLIC_KEY;
+    res.locals.pushbulletUri = process.env.PUSHBULLET_REDIRECT_URI;
     next();
 });
 
@@ -63,6 +66,9 @@ app.use(function( req, res, next ) {
 app.get('/', routes.index);
 app.post('/', routes.run);
 app.get('/request/reactivate/:token', routes.reactivate);
+
+// OAUTH
+app.get('/oauth/pushbullet', oauth.pushbullet);
 
 // CRON
 app.get('/cron/handleRequests/:secureKey', cron.handleRequests);

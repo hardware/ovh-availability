@@ -1,7 +1,8 @@
 var async        = require('async');
 var request      = require('request');
-var api          = require('./ovhApi');
+var ovh          = require('./ovhApi');
 var mailer       = require('./mailer');
+var pushbullet   = require('./pushbulletApi.js');
 var requestModel = require('../models/requests');
 
 /*
@@ -13,10 +14,10 @@ exports.handleRequests = function( req, res, next ) {
 
     checkSecureKey(req, res, req.params.secureKey, function() {
         requestModel.getPendingRequests(next, function( pendingRequests ) {
-            api.getJson(next, function( json ) {
+            ovh.getJson(next, function( json ) {
 
                 async.each(pendingRequests, function( request, nextRequest ) {
-                    api.checkOffer(json, request.reference, next, function( available ) {
+                    ovh.checkOffer(json, request.reference, next, function( available ) {
 
                         if( available ) {
 
@@ -77,7 +78,11 @@ var inform = function( res, request, next ) {
 
     if( request.phone )
         // Envoi du sms de notification
-        api.sendSms( res, request.name, request.phone, next );
+        ovh.sendSms( res, request.name, request.phone, next );
+
+    if( request.pushbullet_token )
+        // Envoi de la notification à Pushbullet
+        pushbullet.sendNotification( request.pushbullet_token, request.name, orderUrl );
 
     // Mise à jour de l'état de la demande ( pending -> done )
     requestModel.updateState( 'done', request.id, next );
