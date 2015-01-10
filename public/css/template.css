@@ -72,6 +72,25 @@
     font-weight: 700;
 }
 
+.bs-callout {
+  padding: 15px;
+  margin: 15px 0px;
+  border-width: 1px 1px 1px 5px;
+  border-style: solid;
+  border-color: #EEE;
+  -moz-border-top-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  border-image: none;
+  border-radius: 3px;
+}
+
+.bs-callout-info {
+  border-left-color: #5BC0DE;
+}
+
+
 ul.serverList {
     list-style-type: none;
     padding: 0px;
@@ -109,4 +128,9 @@ pre {
     font-size:12px;
     white-space:pre;
     color:firebrick;
+}
+
+hr {
+    margin-top:10px;
+    margin-bottom:15px;
 }
