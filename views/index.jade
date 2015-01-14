@@ -77,7 +77,7 @@ block content
                             .form-group
 
                                 label(for='phone') Numéro de téléphone ( optionnel ) :
-                                input(type='text' name='phone' class='form-control' id='tel' placeholder='Exemple : 06XXXXXXXX' data-toggle='popover' title='Information' data-placement="bottom" data-content='Entrez simplement votre numéro de téléphone habituel, il sera préfixé automatiquement à partir du nom de votre pays' value=values.phone)
+                                input(type='text' name='phone' class='form-control' id='tel' placeholder='Indisponible pour le moment' data-toggle='popover' title='Information' data-placement="bottom" data-content='Entrez simplement votre numéro de téléphone habituel, il sera préfixé automatiquement à partir du nom de votre pays' value=values.phone disabled)
 
                                 if formErrors["phone"]
                                     span.help-block #{formErrors["phone"]["msg"]}
@@ -87,7 +87,7 @@ block content
                             .form-group
 
                                 label(for='country') Pays ( optionnel ) :
-                                select(class='form-control' name='country' placeholder='Saisir le nom de votre pays')
+                                select(class='form-control' name='country' placeholder='Saisir le nom de votre pays' disabled)
                                     option()
                                     for country in countries
                                         option(value=country.alpha2 selected=values.country == country.alpha2) #{country.name}
