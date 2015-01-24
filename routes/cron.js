@@ -32,9 +32,12 @@ exports.handleRequests = function( req, res, next ) {
 
                 }, function( err ) {
 
-                    if( err ) { next( err ); return; }
-
-                    res.send('PROCESSING REQUESTS COMPLETED !');
+                    if( err ) {
+                        next( err );
+                        return;
+                    } else {
+                        res.send('PROCESSING REQUESTS COMPLETED !');
+                    }
 
                 });
 
@@ -76,9 +79,9 @@ var inform = function( res, request, next ) {
     // Envoi du mail de notification
     mailer.send( payload, next );
 
-    if( request.phone )
-        // Envoi du sms de notification
-        ovh.sendSms( res, request.name, request.phone, next );
+    // if( request.phone )
+    // Envoi du sms de notification
+    // ovh.sendSms( res, request.name, request.phone, next );
 
     if( request.pushbullet_token )
         // Envoi de la notification à Pushbullet

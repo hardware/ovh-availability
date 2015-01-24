@@ -19,7 +19,7 @@ exports.auth = function( code, next, callback ) {
     }, function( err, response, body ) {
 
         if( err || response.statusCode != 200 ) {
-            next( new Error("PUSHBULLET API - OAUTH Request failed : " + body.error.message) );
+            next( new Error("PUSHBULLET API - OAUTH Request failed") );
             return;
         }
 
@@ -63,7 +63,7 @@ exports.sendNotification = function( token, offer, orderUrl ) {
     }, function( err, response, body ) {
 
         if( err || response.statusCode != 200 ) {
-            console.log("PUSHBULLET API - Request failed : " + body.error.message );
+            console.log("PUSHBULLET API - Request failed");
         }
 
     });
@@ -88,7 +88,7 @@ var callApi = function( url, method, token, params, next, callback ) {
     }, function( err, response, body ) {
 
         if( err || response.statusCode != 200 ) {
-            next( new Error("PUSHBULLET API - Request failed : " + body.error.message) );
+            next( new Error("PUSHBULLET API - Request failed") );
             return;
         }
 
