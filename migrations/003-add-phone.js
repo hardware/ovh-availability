@@ -9,13 +9,9 @@ exports.up = function( next ) {
         async.series([
 
             function( callback ) {
-
                 client.query('ALTER TABLE requests ADD COLUMN phone character varying(20)', function( err, result ) {
-
                     callback();
-
                 });
-
             }
 
         ], function( err, results ) {
@@ -32,9 +28,7 @@ exports.down = function( next ) {
     pg.connect(process.env.DATABASE_URL, function( dbErr, client, done ) {
 
         client.query('ALTER TABLE requests DROP COLUMN phone', function( err, result ) {
-
             next();
-
         });
 
     });

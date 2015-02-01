@@ -11,24 +11,16 @@ exports.up = function( next ) {
 
             // Création de l'énumération "SERVERS_TYPE"
             function( callback ) {
-
                 client.query("CREATE TYPE public.servers_type AS ENUM ('sys','kimsufi')", function( err, result ) {
-
                     callback();
-
                 });
-
             },
 
             // Création de l'énumération "REQUEST_STATE"
             function( callback ) {
-
                 client.query("CREATE TYPE public.request_state AS ENUM ('pending','done')", function( err, result ) {
-
                     callback();
-
                 });
-
             },
 
             // Création de la table "SERVERS"
@@ -92,7 +84,6 @@ exports.up = function( next ) {
                             callback();
                         });
                     },
-
                     function( callback ) {
                         client.query("INSERT INTO servers (type, name, reference) VALUES ('sys', 'E3-SAT-1', '143sys4')", function( err, result ) {
                             callback();
@@ -258,43 +249,27 @@ exports.down = function( next ) {
         async.series([
 
             function( callback ) {
-
                 client.query("DROP TABLE servers CASCADE", function( err, result ) {
-
                     callback();
-
                 });
-
             },
 
             function( callback ) {
-
                 client.query("DROP TABLE requests CASCADE", function( err, result ) {
-
                     callback();
-
                 });
-
             },
 
             function( callback ) {
-
                 client.query("DROP TYPE servers_type", function( err, result ) {
-
                     callback();
-
                 });
-
             },
 
             function( callback ) {
-
                 client.query("DROP TYPE request_state", function( err, result ) {
-
                     callback();
-
                 });
-
             }
 
         ], function( err, results ) {

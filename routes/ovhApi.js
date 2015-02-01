@@ -53,7 +53,7 @@ exports.getJson = function( next, callback ) {
 /*
  *  Permet de vérifier si une offre est disponible
  */
-exports.checkOffer = function( json, ref, next, callback ) {
+exports.checkOffer = function( json, ref, groupZone, next, callback ) {
 
     async.each(json.answer.availability, function( offer, nextOffer ) {
 
@@ -64,7 +64,21 @@ exports.checkOffer = function( json, ref, next, callback ) {
             async.each(offer.zones, function( zone, nextZone ) {
 
                 if( zone.availability != 'unknown' && zone.availability != 'unavailable' )
-                    availableZones++;
+
+                    switch( groupZone ) {
+                        case 'europe':
+                            if( zone.zone == 'gra' || zone.zone == 'sbg' || zone.zone == 'rbx' )
+                                availableZones++;
+                            break;
+                        case 'canada':
+                            if( zone.zone == 'bhs' )
+                                availableZones++;
+                            break;
+                        // Tous les datacenters
+                        default:
+                            availableZones++;
+                            break;
+                    }
 
                 nextZone();
 

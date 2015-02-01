@@ -9,23 +9,15 @@ exports.up = function( next ) {
         async.series([
 
             function( callback ) {
-
                 client.query('ALTER TABLE requests ADD COLUMN token character varying(255)', function( err, result ) {
-
                     callback();
-
                 });
-
             },
 
             function( callback ) {
-
                 client.query('ALTER TABLE requests ALTER COLUMN token SET NOT NULL', function( err, result ) {
-
                     callback();
-
                 });
-
             }
 
         ], function( err, results ) {
@@ -42,9 +34,7 @@ exports.down = function( next ) {
     pg.connect(process.env.DATABASE_URL, function( dbErr, client, done ) {
 
         client.query('ALTER TABLE requests DROP COLUMN token', function( err, result ) {
-
             next();
-
         });
 
     });

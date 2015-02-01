@@ -9,10 +9,10 @@ exports.add = function( data, next, callback ) {
 
     pg.connect(process.env.DATABASE_URL, function( err, client, done ) {
 
-        client.query('INSERT INTO public.requests( reference, mail, date, state, token, phone, pushbullet_token ) \
-                      VALUES( $1, $2, DEFAULT, DEFAULT, $3, $4, $5 )',
+        client.query('INSERT INTO public.requests( reference, mail, date, state, token, phone, pushbullet_token, zone ) \
+                      VALUES( $1, $2, DEFAULT, DEFAULT, $3, $4, $5, $6 )',
 
-            [ data.reference, data.mail, data.token, data.phone, data.pushbulletToken ], function( err, result ) {
+            [ data.reference, data.mail, data.token, data.phone, data.pushbulletToken, data.zone ], function( err, result ) {
 
             if( error.handler( err, client, done, next ) ) return;
             done();
@@ -56,7 +56,7 @@ exports.unique = function( data, next, callback ) {
 exports.getPendingRequests = function( next, callback ) {
 
     pg.connect(process.env.DATABASE_URL, function( err, client, done ) {
-        client.query("SELECT r.id, r.reference, r.mail, r.phone, r.token, r.pushbullet_token, s.type, s.name \
+        client.query("SELECT r.id, r.reference, r.mail, r.phone, r.token, r.pushbullet_token, r.zone, s.type, s.name \
                       FROM public.requests r \
                       LEFT JOIN public.servers s ON s.reference = r.reference \
                       WHERE r.state = $1",

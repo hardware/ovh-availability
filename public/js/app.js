@@ -8,7 +8,7 @@ $(document).ready(function() {
         $(this).button('loading')
     });
 
-    $('select').selectToAutocomplete();
+    $('select[name="server"]').selectToAutocomplete();
 
     $('[data-toggle="popover"]').mouseover(function() {
         $(this).popover('show');

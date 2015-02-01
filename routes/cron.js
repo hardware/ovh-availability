@@ -17,7 +17,7 @@ exports.handleRequests = function( req, res, next ) {
             ovh.getJson(next, function( json ) {
 
                 async.each(pendingRequests, function( request, nextRequest ) {
-                    ovh.checkOffer(json, request.reference, next, function( available ) {
+                    ovh.checkOffer(json, request.reference, request.zone, next, function( available ) {
 
                         if( available ) {
 

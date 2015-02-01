@@ -51,6 +51,8 @@ exports.run = function( req, res, next ) {
             // Validation des valeurs contenues dans req.body
             req.checkBody('mail', invalid).isEmail().len(5, 100);
             req.checkBody('mail', required).notEmpty();
+            req.checkBody('zone', invalid).isIn(['europe', 'canada', 'all']);
+            req.checkBody('zone', required).notEmpty();
             req.checkBody('server', invalid).isIn( ressources.refsList );
             req.checkBody('server', required).notEmpty();
 
@@ -136,7 +138,7 @@ exports.run = function( req, res, next ) {
                 function( callback ) {
 
                     ovh.getJson(next, function( json ) {
-                        ovh.checkOffer(json, req.body.server, next, function( available ) {
+                        ovh.checkOffer(json, req.body.server, req.body.zone, next, function( available ) {
 
                             if( available )
                                 callback("Cette offre est déjà disponible, vous pouvez réserver votre serveur dès à présent.");
@@ -158,7 +160,8 @@ exports.run = function( req, res, next ) {
                             mail:req.body.mail,
                             token:buffer.toString('hex'),
                             phone: ( req.session.phone ) ? req.session.phone : null,
-                            pushbulletToken: ( req.session.pushbullet.token ) ? req.session.pushbullet.token : null
+                            pushbulletToken: ( req.session.pushbullet.token ) ? req.session.pushbullet.token : null,
+                            zone:req.body.zone
                         };
 
                         requestModel.add(data, next, function( result ) {
