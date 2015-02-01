@@ -42,6 +42,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="pushbullet_token">
 		<type name="character varying" length="255"/>
 	</column>
+	<column name="zone" not-null="true">
+		<type name="public.zones"/>
+	</column>
 	<constraint name="id_requests_pm" type="pk-constr" factor="10" table="public.requests">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
@@ -54,7 +57,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="servers">
 	<schema name="public"/>
-	<position x="208" y="228"/>
+	<position x="207" y="247"/>
 	<column name="id" not-null="true">
 		<type name="serial"/>
 	</column>
@@ -74,6 +77,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<columns names="reference" ref-type="src-columns"/>
 	</constraint>
 </table>
+
+<usertype name="zones" configuration="enumeration">
+	<schema name="public"/>
+	<enumeration values="europe,canada,all"/>
+</usertype>
 
 <constraint name="ref_servers_fk" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.servers" table="public.requests">
