@@ -1,3 +1,4 @@
+var S            = require('string');
 var async        = require('async');
 var request      = require('request');
 var ovh          = require('./ovhApi');
@@ -56,7 +57,10 @@ var inform = function( res, request, next ) {
 
     switch( request.type ) {
         case 'sys':
-            orderUrl = 'https://eu.soyoustart.com/fr/commande/soYouStart.xml?reference=' + request.reference
+            if( S( request.reference ).contains('game') )
+                orderUrl = 'https://eu.soyoustart.com/fr/cgi-bin/newOrder/order.cgi?hard=' + request.reference
+            else
+                orderUrl = 'https://eu.soyoustart.com/fr/commande/soYouStart.xml?reference=' + request.reference
             break;
         case 'kimsufi':
             orderUrl = 'https://www.kimsufi.com/fr/commande/kimsufi.xml?reference=' + request.reference
