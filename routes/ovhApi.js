@@ -1,6 +1,7 @@
 var async   = require('async');
 var request = require('request');
 
+/*
 var ovh = require('ovh')({
 
     appKey:process.env.OVH_APP_KEY,
@@ -8,10 +9,12 @@ var ovh = require('ovh')({
     consumerKey:process.env.OVH_CON_KEY
 
 });
+*/
 
 /*
  *  Récupère le nom du service de SMS et le stock localement
  */
+/*
 exports.init = function( req, res, next, callback ) {
 
     ovh.request('GET', '/sms/', function( err, serviceName ) {
@@ -30,6 +33,7 @@ exports.init = function( req, res, next, callback ) {
     });
 
 };
+*/
 
 /*
  *  Permet de récupérer les données de l'API d'OVH au format JSON
@@ -101,6 +105,7 @@ exports.checkOffer = function( json, ref, groupZone, next, callback ) {
 
 };
 
+/*
 exports.sendSms = function( res, offer, phone, next ) {
 
     ovh.request('POST', '/sms/' + res.locals.sms.serviceName + '/jobs/', {
@@ -124,3 +129,4 @@ exports.sendSms = function( res, offer, phone, next ) {
     });
 
 };
+*/

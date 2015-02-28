@@ -55,11 +55,13 @@ function setHeaders( res, path, stat ) {
 app.use(serveStatic(path.join(__dirname, 'public'), { maxAge:ms('1y'), setHeaders:setHeaders }));
 
 // Initialisation de l'API d'OVH
+/*
 app.use(function( req, res, next ) {
     api.init(req, res, next, function() {
         next();
     });
 });
+*/
 
 /*
  *  ROUTES
