@@ -5,6 +5,7 @@ var phone        = require('phone');
 var data         = require('./data');
 var ovh          = require('./ovhApi');
 var recaptcha    = require('./recaptcha');
+var newrelic     = require('./newrelicApi');
 var serversModel = require('../models/servers');
 var requestModel = require('../models/requests');
 
@@ -191,6 +192,16 @@ exports.run = function( req, res, next ) {
                     settings.formMessage = err;
 
                 } else {
+
+                    var events = [];
+                    var eventObject = {
+                        "eventType":"availabilityRequest",
+                        "reference":req.body.server,
+                        "zone":req.body.zone
+                    };
+
+                    events.push( eventObject );
+                    newrelic.submitEvents( events );
 
                     settings.formSuccess = true;
                     settings.formMessage = 'Votre demande a bien été prise en compte.';
