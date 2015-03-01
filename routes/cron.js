@@ -15,74 +15,73 @@ var requestModel = require('../models/requests');
 exports.handleRequests = function( req, res, next ) {
 
     checkSecureKey(req, res, req.params.secureKey, function() {
-        requestModel.getPendingRequests(next, function( pendingRequests ) {
-            ovh.getJson(next, function( json ) {
+    requestModel.getPendingRequests(next, function( pendingRequests ) {
+    ovh.getJson(next, function( json ) {
 
-                var availableOffers = [];
+        var availableOffers = [];
 
-                async.each(pendingRequests, function( request, nextRequest ) {
-                    ovh.checkOffer(json, request.reference, request.zone, next, function( available ) {
+        async.each(pendingRequests, function( request, nextRequest ) {
+            ovh.checkOffer(json, request.reference, request.zone, next, function( available ) {
 
-                        if( available ) {
+                if( available ) {
 
-                            var offer = {
-                                hash:hash( request.name + request.zone ),
-                                offer:request.name,
-                                zone:( request.zone == 'all' ) ? 'europe' : request.zone,
-                            };
+                    var offer = {
+                        hash:hash( request.name + request.zone ),
+                        offer:request.name,
+                        zone:( request.zone == 'all' ) ? 'europe' : request.zone,
+                    };
 
-                            availableOffers.push(offer);
+                    availableOffers.push( offer );
+                    inform( res, request, next );
 
-                            inform( res, request, next );
+                }
 
-                        }
-
-                        nextRequest();
-
-                    });
-
-                }, function( err ) {
-
-                    var arr = {};
-
-                    for ( var i=0; i < availableOffers.length; i++ )
-                        arr[availableOffers[i].hash] = availableOffers[i];
-
-                    availableOffers = [];
-
-                    for ( var key in arr )
-                        availableOffers.push(arr[key]);
-
-                    var events = [];
-
-                    async.each(availableOffers, function( availableOffer, nextOffer ) {
-
-                        var eventObject = {
-                            "eventType":"availableOffers",
-                            "offer":availableOffer.offer,
-                            "zone":availableOffer.zone
-                        };
-
-                        events.push(eventObject);
-                        nextOffer();
-
-                    }, function( err ) {
-
-                        newrelic.submitEvents(events);
-                        res.send('PROCESSING REQUESTS COMPLETED !');
-
-                    });
-
-                });
+                nextRequest();
 
             });
+
+        }, function( err ) {
+
+            var arr = {};
+
+            for( var i = 0; i < availableOffers.length; i++ )
+                arr[availableOffers[i].hash] = availableOffers[i];
+
+            availableOffers = [];
+
+            for( var key in arr )
+                availableOffers.push( arr[key] );
+
+            var events = [];
+
+            async.each(availableOffers, function( availableOffer, nextOffer ) {
+
+                var eventObject = {
+                    "eventType":"availableOffers",
+                    "offer":availableOffer.offer,
+                    "zone":availableOffer.zone
+                };
+
+                events.push( eventObject );
+                nextOffer();
+
+            }, function( err ) {
+
+                newrelic.submitEvents( events );
+                res.send('PROCESSING REQUESTS COMPLETED !');
+
+            });
+
         });
+
+    });
+    });
     });
 
 };
 
 /*
- *  Permet d'informer l'utilisateur par mail et par SMS de la disponibilité d'une offre d'OVH
+ *  Permet d'informer l'utilisateur par mail et par Pushbullet de la disponibilité d'une offre d'OVH
  */
 var inform = function( res, request, next ) {
 
@@ -179,7 +178,7 @@ var hash = function( str ) {
 
            COMMAND             FREQUENCY
 --------------------------------------------
-| cron --task handleRequests | every 10min |
+| cron --task handleRequests | every 1min |
 --------------------------------------------
 
 Note :
