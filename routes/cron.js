@@ -25,10 +25,11 @@ exports.handleRequests = function( req, res, next ) {
 
                 if( available ) {
 
+                    var zone  = ( request.zone == 'all' ) ? 'europe' : request.zone;
                     var offer = {
-                        hash:hash( request.name + request.zone ),
+                        hash:hash( request.name + zone ),
                         offer:request.name,
-                        zone:( request.zone == 'all' ) ? 'europe' : request.zone,
+                        zone:zone
                     };
 
                     availableOffers.push( offer );
