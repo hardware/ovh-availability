@@ -27,10 +27,10 @@ exports.handleRequests = function( req, res, next ) {
 
                     switch( request.zone ) {
                         case 'canada':
-                            var zone = "Canada";
+                            zone = "Canada";
                             break;
                         default:
-                            var zone = "Europe";
+                            zone = "Europe";
                     }
 
                     var offer = {
