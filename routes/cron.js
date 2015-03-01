@@ -15,6 +15,10 @@ var requestModel = require('../models/requests');
 exports.handleRequests = function( req, res, next ) {
 
     checkSecureKey(req, res, req.params.secureKey, function() {
+
+    var mailNotificationCounter = 0;
+    var pushNotificationCounter = 0;
+
     requestModel.getPendingRequests(next, function( pendingRequests ) {
     ovh.getJson(next, function( json ) {
 
@@ -41,6 +45,10 @@ exports.handleRequests = function( req, res, next ) {
 
                     availableOffers.push( offer );
                     inform( res, request, next );
+                    mailNotificationCounter++;
+
+                    if( request.pushbullet_token )
+                        pushNotificationCounter++;
 
                 }
 
@@ -60,22 +68,47 @@ exports.handleRequests = function( req, res, next ) {
             for( var key in arr )
                 availableOffers.push( arr[key] );
 
-            var events = [];
+            var newRelicEvents = [];
 
             async.each(availableOffers, function( availableOffer, nextOffer ) {
 
-                var eventObject = {
+                var eventAvailableOffersObject = {
                     "eventType":"availableOffers",
                     "offer":availableOffer.offer,
                     "zone":availableOffer.zone
                 };
 
-                events.push( eventObject );
+                newRelicEvents.push( eventAvailableOffersObject );
                 nextOffer();
 
             }, function( err ) {
 
-                newrelic.submitEvents( events );
+                if( mailNotificationCounter > 0 ) {
+
+                    var eventMailNotificationObject = {
+                        "eventType":"mailNotifications",
+                        "mailCounter":mailNotificationCounter,
+                    };
+
+                    newRelicEvents.push( eventMailNotificationObject );
+
+                }
+
+                if( pushNotificationCounter > 0 ) {
+
+                    var eventPushNotificationObject = {
+                        "eventType":"pushNotifications",
+                        "pushCounter":pushNotificationCounter,
+                    };
+
+                    newRelicEvents.push( eventPushNotificationObject );
+
+                }
+
+                if( newRelicEvents.length > 0 )
+                    // Envoi des évènement à l'API de NewRelic Insights
+                    newrelic.submitEvents( newRelicEvents );
+
                 res.send('PROCESSING REQUESTS COMPLETED !');
 
             });

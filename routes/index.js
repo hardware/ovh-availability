@@ -127,7 +127,7 @@ exports.run = function( req, res, next ) {
                     requestModel.unique({ ref:req.body.server, mail:req.body.mail }, next, function( unique ) {
 
                         if( ! unique )
-                            callback("Votre demande est toujours en attente, vous ne pouvez pas en créer plusieurs à la fois. Merci d'attendre de recevoir la notification par mail / SMS.");
+                            callback("Votre demande est toujours en attente, vous ne pouvez pas en créer plusieurs à la fois. Merci d'attendre de recevoir la notification par mail / Pushbullet.");
                         else
                             callback();
 
