@@ -25,7 +25,14 @@ exports.handleRequests = function( req, res, next ) {
 
                 if( available ) {
 
-                    var zone  = ( request.zone == 'all' ) ? 'europe' : request.zone;
+                    switch( request.zone ) {
+                        case 'canada':
+                            var zone = "Canada";
+                            break;
+                        default:
+                            var zone = "Europe";
+                    }
+
                     var offer = {
                         hash:hash( request.name + zone ),
                         offer:request.name,
