@@ -4,6 +4,7 @@ var request      = require('request');
 var ovh          = require('./ovhApi');
 var mailer       = require('./mailer');
 var pushbullet   = require('./pushbulletApi.js');
+var newrelic     = require('./newrelicApi.js');
 var requestModel = require('../models/requests');
 
 /*
@@ -17,12 +18,21 @@ exports.handleRequests = function( req, res, next ) {
         requestModel.getPendingRequests(next, function( pendingRequests ) {
             ovh.getJson(next, function( json ) {
 
+                var availableOffers = [];
+
                 async.each(pendingRequests, function( request, nextRequest ) {
                     ovh.checkOffer(json, request.reference, request.zone, next, function( available ) {
 
                         if( available ) {
 
-                            console.log(request.name + " is available");
+                            var offer = {
+                                hash:hash( request.name + request.zone ),
+                                offer:request.name,
+                                zone:( request.zone == 'all' ) ? 'Europe/Canada' : request.zone,
+                            };
+
+                            availableOffers.push(offer);
+
                             inform( res, request, next );
 
                         }
@@ -33,12 +43,35 @@ exports.handleRequests = function( req, res, next ) {
 
                 }, function( err ) {
 
-                    if( err ) {
-                        next( err );
-                        return;
-                    } else {
+                    var arr = {};
+
+                    for ( var i=0; i < availableOffers.length; i++ )
+                        arr[availableOffers[i].hash] = availableOffers[i];
+
+                    availableOffers = [];
+
+                    for ( var key in arr )
+                        availableOffers.push(arr[key]);
+
+                    var events = [];
+
+                    async.each(availableOffers, function( availableOffer, nextOffer ) {
+
+                        var eventObject = {
+                            "eventType":"availableOffers",
+                            "offer":availableOffer.offer,
+                            "zone":availableOffer.zone
+                        };
+
+                        events.push(eventObject);
+                        nextOffer();
+
+                    }, function( err ) {
+
+                        newrelic.submitEvents(events);
                         res.send('PROCESSING REQUESTS COMPLETED !');
-                    }
+
+                    });
 
                 });
 
@@ -105,6 +138,39 @@ var checkSecureKey = function( req, res, secureKey, callback ) {
         callback();
     else
         res.send('invalid secure key ! :(');
+
+}
+
+var makeCRCTable = function() {
+
+    var c;
+    var crcTable = [];
+
+    for (var n = 0; n < 256; n++) {
+
+        c = n;
+
+        for (var k = 0; k < 8; k++)
+            c = ((c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+
+        crcTable[n] = c;
+
+    }
+
+    return crcTable;
+
+}
+
+var crcTable = makeCRCTable();
+
+var hash = function( str ) {
+
+    var crc = 0 ^ (-1);
+
+    for (var i = 0; i < str.length; i++)
+        crc = (crc >>> 8) ^ crcTable[(crc ^ str.charCodeAt(i)) & 0xFF];
+
+    return (crc ^ (-1)) >>> 0;
 
 }
 
