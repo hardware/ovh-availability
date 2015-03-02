@@ -42,7 +42,7 @@ exports.getUserIdentity = function( token, next, callback ) {
 /*
  *  Envoi une notification à Pushbullet
  */
-exports.sendNotification = function( token, offer, orderUrl ) {
+exports.sendNotification = function( token, offer, orderUrl, next ) {
 
     request({
 
@@ -63,7 +63,7 @@ exports.sendNotification = function( token, offer, orderUrl ) {
     }, function( err, response, body ) {
 
         if( err || response.statusCode != 200 ) {
-            next( new Error("PUSHBULLET API - Request failed") );
+            next( new Error("PUSHBULLET API - Send notification failed") );
             return;
         }
 

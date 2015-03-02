@@ -162,7 +162,7 @@ var inform = function( res, request, next ) {
 
     if( request.pushbullet_token )
         // Envoi de la notification à Pushbullet
-        pushbullet.sendNotification( request.pushbullet_token, request.name, orderUrl );
+        pushbullet.sendNotification( request.pushbullet_token, request.name, orderUrl, next );
 
     // Mise à jour de l'état de la demande ( pending -> done )
     requestModel.updateState( 'done', request.id, next );
