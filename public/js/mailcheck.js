@@ -22,6 +22,7 @@ mailInput.on('blur', function() {
     topLevelDomains:topLevelDomains,
 
     suggested: function( element, suggestion ) {
+      mailInput.next('span.help-block').remove();
       mailInput.after('<span class="help-block">Vous voulez dire <a id="suggestion" href="javascript:{}">' + suggestion.full + '</a> ?</span>');
     },
 
