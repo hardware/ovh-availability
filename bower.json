@@ -20,6 +20,7 @@
     "html5shiv": "3.7.2",
     "respond": "1.4.2",
     "font-awesome": "4.2.0",
-    "pace": "~1.0.2"
+    "pace": "~1.0.2",
+    "mailcheck": "~1.1.0"
   }
 }

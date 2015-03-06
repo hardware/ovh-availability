@@ -36,6 +36,7 @@ module.exports = function(grunt) {
           'public/js/dest/scripts.min.js':[
             'public/bower/jquery/dist/jquery.min.js',
             'public/bower/pace/pace.min.js',
+            'public/bower/mailcheck/src/mailcheck.min.js',
             'public/bower/bootstrap/dist/js/bootstrap.min.js',
             'public/js/*.js'
           ]
