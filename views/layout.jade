@@ -15,9 +15,13 @@ html
 
         include includes/newrelic
 
+        link(rel="icon" href="/img/favicon.png")
         link(href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700' rel='stylesheet' type='text/css')
         link(href='/bower/font-awesome/css/font-awesome.min.css', rel='stylesheet')
         link(href='/css/dest/styles.min.css', rel='stylesheet')
+
+        +ie('if IE')
+            link(rel='shortcut icon' href='/img/favicon.ico')
 
         +ie('if lt IE 9')
             script(src='/bower/html5shiv/dist/html5shiv.js')

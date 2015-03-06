@@ -22,7 +22,7 @@ exports.settings = function( req, res, options, callback ) {
 
     var settings = {
         path:req.path,
-        title:"OVH Disponibilité",
+        title:"OVH Availability",
         isLogged:isLogged
     };
 
