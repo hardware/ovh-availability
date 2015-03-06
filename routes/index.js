@@ -284,6 +284,15 @@ exports.reactivate = function( req, res, next ) {
 
                 } else {
 
+                    var events = [];
+                    var eventObject = {
+                        "eventType":"reactivateRequest",
+                        "count":1
+                    };
+
+                    events.push( eventObject );
+                    newrelic.submitEvents( events );
+
                     settings.formSuccess = true;
                     settings.formMessage = 'Votre demande a bien été réactivée.';
                     settings.request     = request;
