@@ -1,6 +1,6 @@
 {
   "name": "ovh-availability",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Application permettant de connaitre la disponibilité des serveurs d'OVH (SoYourStart, Kimsufi)",
   "main": "web.js",
   "moduleType": [
