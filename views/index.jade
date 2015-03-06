@@ -34,16 +34,15 @@ block content
                                     p
                                         | La liste est disponible ici : <a href="https://www.pushbullet.com/apps">https://www.pushbullet.com/apps</a>
 
-                    .row
-                        .col-md-3.col-md-offset-5
-                            .thumbnail
-                                img(src='/img/pushbullet.png' alt='Pushbullet')
-                                .caption
-                                    if pushbullet
-                                        span.label.label-success Connexion OK !
-                                    else
-                                        p.text-center Pushbullet
-                                        p.text-center: a(href='https://www.pushbullet.com/authorize?client_id='+pushbulletKey+'&redirect_uri='+pushbulletUri+'&response_type=code&scope=everything' class='btn btn-flat style2' role='button') Connexion
+                    .row.text-center
+                        .thumbnail
+                            img(src='/img/pushbullet.png' alt='Pushbullet')
+                            .caption
+                                if pushbullet
+                                    span.label.label-success Connexion OK !
+                                else
+                                    p.text-center Pushbullet
+                                    p.text-center: a(href='https://www.pushbullet.com/authorize?client_id='+pushbulletKey+'&redirect_uri='+pushbulletUri+'&response_type=code&scope=everything' class='btn btn-flat style2' role='button') Connexion
 
                     .row
                         .col-md-6.col-md-offset-3
@@ -110,11 +109,9 @@ block content
 
                     .deviter
 
-                    .row
-                        .col-md-6.col-md-offset-4
-                            .form-group
-
-                                div(class='g-recaptcha' data-sitekey=recaptchaKey)
+                    .row.text-center
+                        .form-group
+                            div(class='g-recaptcha' data-sitekey=recaptchaKey)
 
                     .text-center
                         button(type='submit' id='submit' class='btn btn-flat btn-lg' data-loading-text='Validation en cours...' autocomplete='off') Envoyer

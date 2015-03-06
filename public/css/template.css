@@ -1,24 +1,14 @@
-.col-md-3 {
-    width: 22%;
-}
-
-.col-md-offset-4 {
-    margin-left: 32.333%;
-}
-
-.col-md-offset-5 {
-    margin-left: 41.667%;
-}
-
 .thumbnail {
     padding: 0px;
     width:127px;
     min-width: 127px;
     max-width: 127px;
+    display: inline-block;
+    margin-right:10px;
 }
 
-.thumbnail span.label {
-    margin-left:6px;
+.g-recaptcha {
+    display: inline-block;
 }
 
 .portrait, .content, #backtotop{
@@ -133,4 +123,12 @@ pre {
 hr {
     margin-top:10px;
     margin-bottom:15px;
+}
+
+@media all and (max-width: 629px) {
+
+    .nr-graph {
+        display:none;
+    }
+
 }
