@@ -9,11 +9,11 @@ exports.verify = function( req, response, next, callback ) {
 
     var url = "https://www.google.com/recaptcha/api/siteverify?secret=" + process.env.RECAPTCHA_PRIVATE_KEY + "&response=" + response + "&remoteip=" + ip
 
-    request(url, function( error, response, body ) {
+    request(url, function( err, response, body ) {
 
-        if ( error || response.statusCode != 200 ) {
+        if ( err || response.statusCode != 200 ) {
 
-            next( error );
+            next( new Error( err ) );
             return;
 
         } else {

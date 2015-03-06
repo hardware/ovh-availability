@@ -175,7 +175,8 @@ exports.run = function( req, res, next ) {
 
                             } else {
 
-                                callback("Une erreur est survenue lors de l'enregistrement de votre demande dans la base de données.");
+                                next( new Error("Une erreur est survenue lors de l'enregistrement de votre demande dans la base de données.") );
+                                return;
 
                             }
 
@@ -278,8 +279,8 @@ exports.reactivate = function( req, res, next ) {
 
                 if( err ) {
 
-                    settings.formError   = true;
-                    settings.formMessage = err;
+                    next( new Error( err ) );
+                    return;
 
                 } else {
 
@@ -346,7 +347,7 @@ var loadResources = function( options, next, callback ) {
 
         if( err ) {
 
-            next( err );
+            next( new Error( err ) );
             return;
 
         }

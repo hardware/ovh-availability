@@ -88,7 +88,10 @@ exports.checkOffer = function( json, ref, groupZone, next, callback ) {
 
             }, function( err ) {
 
-                if( err ) { next( err ); return; }
+                if( err ) {
+                    next( new Error( err ) );
+                    return;
+                }
 
                 if( availableZones > 0 )
                     callback( true );

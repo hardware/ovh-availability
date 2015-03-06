@@ -33,7 +33,7 @@ exports.send = function( email, next ) {
 
         if( err ) {
 
-            next( err );
+            next( new Error( err ) );
             return;
 
         } else {
