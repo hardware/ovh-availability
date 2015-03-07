@@ -262,16 +262,8 @@ exports.reactivate = function( req, res, next ) {
                 // Mise à jour de la demande
                 function( callback ) {
 
-                    crypto.randomBytes(24, function( ex, buffer ) {
-
-                        var token = buffer.toString('hex');
-
-                        requestModel.updateState('pending', request.id, next);
-                        requestModel.updateToken(token, request.id, next);
-
-                        callback();
-
-                    });
+                    requestModel.updateState('pending', request.id, next);
+                    callback();
 
                 }
 
