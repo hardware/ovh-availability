@@ -13,6 +13,7 @@ var serveStatic  = require('serve-static');
 var session      = require('express-session');
 var validator    = require('express-validator');
 var csrf         = require('csurf');
+var i18n         = require('i18n');
 
 var routes = require('./routes');
 var cron   = require('./routes/cron');
@@ -26,6 +27,14 @@ app.set('port', process.env.PORT);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+i18n.configure({
+    locales:['en', 'fr'],
+    defaultLocale: 'en',
+    cookie: 'language',
+    directory: path.join(__dirname, 'locales'),
+    updateFiles: false
+});
+
 if(app.get('env') == 'development') {
     app.use(logger('dev'));
     var edt = require('express-debug');
@@ -37,6 +46,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(validator());
 app.use(cookieParser(process.env.COOKIES_SECRET));
+app.use(i18n.init);
 app.use(session({ secret: process.env.SESSION_SECRET, key: 'SID', resave:true, saveUninitialized:true }));
 app.use(csrf());
 
@@ -70,6 +80,12 @@ app.use(function( req, res, next ) {
 // INDEX
 app.get('/', routes.index);
 app.post('/', routes.run);
+
+// LANGUAGE
+app.get('/en', routes.en);
+app.get('/fr', routes.fr);
+
+// REACTIVATE
 app.get('/request/reactivate/:token', routes.reactivate);
 
 // OAUTH
@@ -82,7 +98,7 @@ app.get('/cron/handleRequests/:secureKey', cron.handleRequests);
  *  ERREUR 404
  */
 app.use(function( req, res, next ) {
-    var err = new Error('Page introuvable');
+    var err = new Error( res.__('ERR_PageNotFound') );
     err.status = 404;
     next( err );
 });
@@ -100,7 +116,7 @@ if (app.get('env') === 'development') {
 
         res.status( statusCode );
         res.render('error', {
-            title:'Erreur',
+            title:res.__('ERR_Error'),
             error:err,
             message: err.message,
             statusCode:statusCode
@@ -117,7 +133,7 @@ app.use(function( err, req, res, next ) {
 
     res.status( statusCode );
     res.render('error', {
-        title:'Erreur',
+        title:res.__('ERR_Error'),
         error:{},
         message: err.message,
         statusCode:statusCode

@@ -1,0 +1,49 @@
+{
+    "INDEX_ServersList":"Servers",
+    "INDEX_ServersList_PH":"Saisir le nom du serveur",
+    "INDEX_Location":"Zone",
+    "INDEX_AnyLocation":"Indifférent",
+    "INDEX_AvailableLocations":"Zones disponibles",
+    "INDEX_EmailAddress":"Adresse mail",
+    "INDEX_EmailAddress_PH":"Votre adresse email",
+    "INDEX_Validating":"Validation en cours...",
+    "INDEX_Submit":"Envoyer",
+    "INDEX_PushBulletLogin":"Connexion",
+    "INDEX_PBNotifications":"NOTIFICATIONS VIA PUSHBULLET",
+    "INDEX_PBSummary":"Pushbullet est une application qui permet de recevoir des notification directement sur votre mobile, tablette, navigateur...etc",
+    "INDEX_PBSummary2":"La liste est disponible ici",
+    "INDEX_PBConnected":"Connecté",
+    "INDEX_WelcomeMessage":"Pour connaitre la disponibilité des offres d'OVH ( SoYourStart / Kimsufi ), choisissez un serveur parmis la liste ci-dessous, ajoutez votre adresse mail, votre numéro de téléphone et connectez votre compte Pushbullet pour être notifié sur vos différents appareils.",
+    "INDEX_WelcomeMessage2":"Vous serez prévenu automatiquement lorsque le serveur souhaité sera disponible.",
+    "INDEX_Statistics":"STATISTIQUES",
+    "INDEX_Popular":"Serveurs les plus demandés :",
+    "INDEX_SupportedServices":"SERVICES SUPPORTÉS",
+    "RUN_InvalidField":"La valeur de ce champ est invalide.",
+    "RUN_RequiredField":"Ce champ est requis.",
+    "RUN_InvalidPostData":"Une erreur est survenue lors de la validation du formulaire, veuillez vérifier les données saisies.",
+    "RUN_InvalidPhoneNumber":"Votre numéro de téléphone est invalide.",
+    "RUN_Captcha":"Veuillez cocher la case située à la fin du formulaire afin de prouver que vous êtes bien humain.",
+    "RUN_WaitNotification":"Votre demande est toujours en attente. Vous devez 'attendre de recevoir la notification par mail / Pushbullet.",
+    "RUN_AlreadyAvailable":"Cette offre est déjà disponible, vous pouvez réserver votre serveur dès à présent.",
+    "RUN_DbError":"Une erreur est survenue lors de l'enregistrement de votre demande dans la base de données.",
+    "RUN_Success":"Votre demande a bien été prise en compte.",
+    "REACTIVATE_InvalidToken":"Impossible d'effectuer cette action, token invalide.",
+    "REACTIVATE_RequestStillActive":"Impossible d'effectuer cette action, votre demande est toujours active.",
+    "REACTIVATE_Reactivated":"Votre demande a bien été réactivée.",
+    "JS_Loading":"Chargement en cours...",
+    "ANY_BackToHome":"Retour à l'accueil",
+    "ERR_Error":"Erreur",
+    "ERR_PageNotFound":"Page introuvable",
+    "%d pending request": {
+        "one":"%d demande en attente",
+        "other":"%d demandes en attente"
+    },
+    "%d completed request": {
+        "one":"%d demande terminée",
+        "other":"%d demandes terminées"
+    },
+    "%d request": {
+        "one":"%d demande",
+        "other":"%d demandes"
+    }
+}

@@ -4,41 +4,54 @@
         .col-lg-12
             h3.title.with-icon
                 i.fa.fa-bar-chart-o.icn-title
-                | STATISTIQUES
+                | #{__('INDEX_Statistics')}
             .box-fact-area
                 .row
                     .col-sm-4
                         .box-fact
                             i.fa.fa-bell-o.icn-fixed
-                            | #{stats.pendingRequests} demande(s) en attente
+                            | #{__n('%d pending request', stats.pendingRequests)}
                     .col-sm-4
                         .box-fact
                             i.fa.fa-check.icn-fixed
-                            | #{stats.doneRequests} demandes terminées
+                            | #{__n('%d completed request', stats.doneRequests)}
                     .col-sm-4
                         .box-fact
                             i.fa.fa-star-o.icn-fixed
-                            | Serveurs les plus demandés :
+                            | #{__('INDEX_Popular')} :
                             ul.serverList
                                 for mostRequestedServer in stats.mostRequestedServers
-                                    li #{mostRequestedServer.name} ( #{mostRequestedServer.occurrences} demandes )
+                                    li #{mostRequestedServer.name} ( #{__n('%d request', mostRequestedServer.occurrences)} )
     .row
         .col-lg-12
 
-            div(class='nr-graph' style='position:relative;width:100%;height:0;padding-bottom:56.25%')
-                iframe(width='384' height='216' src='https://insights-embed.newrelic.com/embedded_widget/hA-XxWYL92OSJcp67E5ZzHMiTAZYzS-H' frameborder='0' style='position:absolute;width:100%;height:100%')
+            if getLocale() == 'en'
 
-            div(class='nr-graph' style='position:relative;width:100%;height:0;padding-bottom:56.25%')
-                iframe(width='384' height='216' src='https://insights-embed.newrelic.com/embedded_widget/1WqvOevJ3Y9iJf0xR0ch3a00mePq6VK2' frameborder='0' style='position:absolute;width:100%;height:100%')
+                div(class='nr-graph' style='position:relative;width:100%;height:0;padding-bottom:56.25%')
+                    iframe(width='384' height='216' src='https://insights-embed.newrelic.com/embedded_widget/Joa2ysfKWdyg7auH87JK1USO2JGuafN1' frameborder='0' style='position:absolute;width:100%;height:100%')
 
-            div(class='nr-graph' style='position:relative;width:100%;height:0;padding-bottom:56.25%')
-                iframe(width='384' height='216' src='https://insights-embed.newrelic.com/embedded_widget/OsqNExOGkBWp4T-guLxdOs_RkLS_t6ey' frameborder='0' style='position:absolute;width:100%;height:100%')
+                div(class='nr-graph' style='position:relative;width:100%;height:0;padding-bottom:56.25%')
+                    iframe(width='384' height='216' src='https://insights-embed.newrelic.com/embedded_widget/bcwW0Pi-TVCtfgvPypH2Stx68Ao0swtG' frameborder='0' style='position:absolute;width:100%;height:100%')
+
+                div(class='nr-graph' style='position:relative;width:100%;height:0;padding-bottom:56.25%')
+                    iframe(width='384' height='216' src='https://insights-embed.newrelic.com/embedded_widget/AoFGOaA2K3d0t6ytFftYxJjUG2Y9v3ao' frameborder='0' style='position:absolute;width:100%;height:100%')
+
+            else
+
+                div(class='nr-graph' style='position:relative;width:100%;height:0;padding-bottom:56.25%')
+                    iframe(width='384' height='216' src='https://insights-embed.newrelic.com/embedded_widget/hA-XxWYL92OSJcp67E5ZzHMiTAZYzS-H' frameborder='0' style='position:absolute;width:100%;height:100%')
+
+                div(class='nr-graph' style='position:relative;width:100%;height:0;padding-bottom:56.25%')
+                    iframe(width='384' height='216' src='https://insights-embed.newrelic.com/embedded_widget/1WqvOevJ3Y9iJf0xR0ch3a00mePq6VK2' frameborder='0' style='position:absolute;width:100%;height:100%')
+
+                div(class='nr-graph' style='position:relative;width:100%;height:0;padding-bottom:56.25%')
+                    iframe(width='384' height='216' src='https://insights-embed.newrelic.com/embedded_widget/OsqNExOGkBWp4T-guLxdOs_RkLS_t6ey' frameborder='0' style='position:absolute;width:100%;height:100%')
 
     .row
         .col-lg-12
             h3.title.with-icon
                 i.fa.fa-users.icn-title
-                | SERVICES SUPPORTÉS
+                | #{__('INDEX_SupportedServices')}
             .box-block
                 ul.list-unstyled.list-clients.clearfix
                     li

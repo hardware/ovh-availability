@@ -1,0 +1,49 @@
+{
+	"INDEX_ServersList":"Servers",
+	"INDEX_ServersList_PH":"Enter the server name",
+    "INDEX_Location":"Location",
+    "INDEX_AnyLocation":"Any location",
+    "INDEX_AvailableLocations":"Available locations",
+    "INDEX_EmailAddress":"Email address",
+    "INDEX_EmailAddress_PH":"Your email address",
+    "INDEX_Validating":"Validating...",
+    "INDEX_Submit":"Add",
+    "INDEX_PushBulletLogin":"Login",
+    "INDEX_PBNotifications":"PUSHBULLET NOTIFICATIONS",
+    "INDEX_PBSummary":"Pushbullet is an application that allows you to receive notification directly to your mobile, tablet, browser etc ...",
+    "INDEX_PBSummary2":"The list is available here",
+    "INDEX_PBConnected":"Connected",
+    "INDEX_WelcomeMessage":"Kimsufi / SoYouStart servers availability checker. Select the server type, select the datacenter location and add your email address.",
+    "INDEX_WelcomeMessage2":"You will be notified automatically when the desired server will be available.",
+    "INDEX_Statistics":"STATISTICS",
+    "INDEX_Popular":"Popular servers",
+    "INDEX_SupportedServices":"SUPPORTED SERVICES",
+    "RUN_InvalidField":"The value of this field is invalid.",
+    "RUN_RequiredField":"This field is required.",
+    "RUN_InvalidPostData":"An error occured when validating the form, please verify the entered data.",
+    "RUN_InvalidPhoneNumber":"Your phone number is invalid.",
+    "RUN_Captcha":"Please check the box at the end of the form to prove you are a human.",
+    "RUN_WaitNotification":"Your request is still pending. You must wait to receive notification by email / Pushbullet.",
+    "RUN_AlreadyAvailable":"This offer is already available, you can get your server now.",
+    "RUN_DbError":"An error has occurred in the database.",
+    "RUN_Success":"Your request has been taken into account.",
+    "REACTIVATE_InvalidToken":"Can not perform this action, invalid token.",
+    "REACTIVATE_RequestStillActive":"Can not perform this action, your request is still active.",
+    "REACTIVATE_Reactivated":"Your request has been reactivated.",
+    "JS_Loading":"Loading...",
+    "ANY_BackToHome":"Back to home",
+    "ERR_Error":"Error",
+    "ERR_PageNotFound":"Page not found",
+    "%d pending request": {
+        "one":"%d pending request",
+        "other":"%d pending requests"
+    },
+    "%d completed request": {
+        "one":"%d completed request",
+        "other":"%d completed requests"
+    },
+    "%d request": {
+        "one":"%d request",
+        "other":"%d requests"
+    }
+}

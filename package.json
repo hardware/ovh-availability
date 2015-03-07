@@ -20,6 +20,7 @@
     "express-session": "^1.10.3",
     "express-validator": "^2.8.0",
     "grunt-cli": "^0.1.13",
+    "i18n": "^0.5.0",
     "jade": "^1.9.2",
     "migrate": "^0.2.0",
     "morgan": "^1.5.1",

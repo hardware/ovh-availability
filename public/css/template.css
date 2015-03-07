@@ -80,6 +80,19 @@
   border-left-color: #5BC0DE;
 }
 
+.flag {
+    display:inline-block;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    margin-bottom: 100px;
+}
+
+.flag a {
+    margin-right: 10px;
+    text-decoration: none;
+    margin-bottom: 100px;
+}
 
 ul.serverList {
     list-style-type: none;

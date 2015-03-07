@@ -46,8 +46,8 @@ exports.run = function( req, res, next ) {
     data.settings(req, res, { shouldBeLogged:false, mayBeLogged:true }, function( settings ) {
         loadResources({ refs:true }, next, function( ressources ) {
 
-            var invalid  = 'La valeur de ce champ est invalide.';
-            var required = 'Ce champ est requis.';
+            var invalid  = res.__('RUN_InvalidField');
+            var required = res.__('RUN_RequiredField');
 
             // Validation des valeurs contenues dans req.body
             req.checkBody('mail', invalid).isEmail().len(5, 100);
@@ -71,7 +71,7 @@ exports.run = function( req, res, next ) {
                 function( callback ) {
 
                     if( errors )
-                        callback("Une erreur est survenue lors de la validation du formulaire, veuillez vérifier les données saisies.");
+                        callback( res.__('RUN_InvalidPostData') );
                     else
                         callback();
 
@@ -86,7 +86,7 @@ exports.run = function( req, res, next ) {
 
                         if( ! phoneNumber ) {
 
-                            callback("Votre numéro de téléphone est invalide.");
+                            callback( res.__('RUN_InvalidPhoneNumber') );
 
                         } else {
 
@@ -113,7 +113,7 @@ exports.run = function( req, res, next ) {
                     recaptcha.verify(req, req.body["g-recaptcha-response"], next, function( result ) {
 
                         if( ! result )
-                            callback("Veuillez cocher la case située à la fin du formulaire afin de prouver que vous êtes bien humain.");
+                            callback( res.__('RUN_Captcha') );
                         else
                             callback();
 
@@ -127,7 +127,7 @@ exports.run = function( req, res, next ) {
                     requestModel.unique({ ref:(req.body.server).toLowerCase(), mail:(req.body.mail).toLowerCase() }, next, function( unique ) {
 
                         if( ! unique )
-                            callback("Votre demande est toujours en attente, vous ne pouvez pas en créer plusieurs à la fois. Merci d'attendre de recevoir la notification par mail / Pushbullet.");
+                            callback( res.__('RUN_WaitNotification') );
                         else
                             callback();
 
@@ -142,7 +142,7 @@ exports.run = function( req, res, next ) {
                         ovh.checkOffer(json, req.body.server, req.body.zone, next, function( available ) {
 
                             if( available )
-                                callback("Cette offre est déjà disponible, vous pouvez réserver votre serveur dès à présent.");
+                                callback( res.__('RUN_AlreadyAvailable') );
                             else
                                 callback();
 
@@ -175,7 +175,7 @@ exports.run = function( req, res, next ) {
 
                             } else {
 
-                                next( new Error("Une erreur est survenue lors de l'enregistrement de votre demande dans la base de données.") );
+                                next( new Error(res.__('RUN_DbError')) );
                                 return;
 
                             }
@@ -205,7 +205,7 @@ exports.run = function( req, res, next ) {
                     newrelic.submitEvents( events );
 
                     settings.formSuccess = true;
-                    settings.formMessage = 'Votre demande a bien été prise en compte.';
+                    settings.formMessage = res.__('RUN_Success');
 
                 }
 
@@ -243,7 +243,7 @@ exports.reactivate = function( req, res, next ) {
                 function( callback ) {
 
                     if( ! request )
-                        callback("Impossible d'effectuer cette action, token invalide.");
+                        callback( res.__('REACTIVATE_InvalidToken') );
                     else
                         callback();
 
@@ -253,7 +253,7 @@ exports.reactivate = function( req, res, next ) {
                 function( callback ) {
 
                     if( request.state == 'pending' )
-                        callback("Impossible d'effectuer cette action, votre demande est toujours active.");
+                        callback( res.__('REACTIVATE_RequestStillActive') );
                     else
                         callback();
 
@@ -294,7 +294,7 @@ exports.reactivate = function( req, res, next ) {
                     newrelic.submitEvents( events );
 
                     settings.formSuccess = true;
-                    settings.formMessage = 'Votre demande a bien été réactivée.';
+                    settings.formMessage = res.__('REACTIVATE_Reactivated');
                     settings.request     = request;
 
                 }
@@ -306,6 +306,29 @@ exports.reactivate = function( req, res, next ) {
         });
     });
 };
+
+/*
+ *  Route : /en
+ *  Methode : GET
+ */
+exports.en = function( req, res, next ) {
+
+    res.cookie('language', 'en', { maxAge: 900000, httpOnly: true });
+    res.redirect('/');
+
+};
+
+/*
+ *  Route : /fr
+ *  Methode : GET
+ */
+exports.fr = function( req, res, next ) {
+
+    res.cookie('language', 'fr', { maxAge: 900000, httpOnly: true });
+    res.redirect('/');
+
+};
+
 
 /*
  *  Charge toutes les ressources de manière asynchrone

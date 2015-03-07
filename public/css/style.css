@@ -79,7 +79,8 @@ body h6 {
 .portrait .box-note {
   position: relative;
   max-width: 600px;
-  margin: 30px auto;
+  margin: 15px auto;
+  margin-top: 40px;
   background: #249ebd;
   padding: 10px 15px;
   color: white;

@@ -26,30 +26,27 @@ block content
                         if ! pushbullet
                             .col-md-8.col-md-offset-2
                                 div(class='bs-callout bs-callout-info' id='info-top')
-                                    h5.text-center <strong>NOTIFICATIONS VIA PUSHBULLET</strong>
+                                    h5.text-center <strong>#{__('INDEX_PBNotifications')}</strong>
                                     hr
-                                    p
-                                        | Pushbullet est une application qui permet de recevoir des
-                                        | notification directement sur votre mobile, tablette, navigateur...etc
-                                    p
-                                        | La liste est disponible ici : <a href="https://www.pushbullet.com/apps">https://www.pushbullet.com/apps</a>
+                                    p #{__('INDEX_PBSummary')}
+                                    p #{__('INDEX_PBSummary2')} : <a href="https://www.pushbullet.com/apps">https://www.pushbullet.com/apps</a>
 
                     .row.text-center
                         .thumbnail
                             img(src='/img/pushbullet.png' alt='Pushbullet')
                             .caption
                                 if pushbullet
-                                    span.label.label-success Connexion OK !
+                                    span.label.label-success #{__('INDEX_PBConnected')}
                                 else
                                     p.text-center Pushbullet
-                                    p.text-center: a(href='https://www.pushbullet.com/authorize?client_id='+pushbulletKey+'&redirect_uri='+pushbulletUri+'&response_type=code&scope=everything' class='btn btn-flat style2' role='button') Connexion
+                                    p.text-center: a(href='https://www.pushbullet.com/authorize?client_id='+pushbulletKey+'&redirect_uri='+pushbulletUri+'&response_type=code&scope=everything' class='btn btn-flat style2' role='button') #{__('INDEX_PushBulletLogin')}
 
                     .row
                         .col-md-6.col-md-offset-3
                             .form-group
 
-                                label(for='server') Liste des serveurs :
-                                select(class='form-control' name='server' placeholder='Saisir le nom du serveur')
+                                label(for='server') #{__('INDEX_ServersList')} :
+                                select(class='form-control' name='server' placeholder=__('INDEX_ServersList_PH'))
                                     option()
                                     optgroup(label='Gamme SoYouStart :')
                                         for server in sysServersList
@@ -65,11 +62,11 @@ block content
                         .col-md-6.col-md-offset-3
                             .form-group
 
-                                label(for='zone') Zone :
-                                select(class='form-control' name='zone' data-toggle='popover' title='Zones disponibles' data-placement="bottom" data-content='EU : Gravelines, Strasbourg, Roubaix US : Beauharnois')
+                                label(for='zone') #{__('INDEX_Location')} :
+                                select(class='form-control' name='zone' data-toggle='popover' title=__('INDEX_AvailableLocations') data-placement="bottom" data-content='EU : Gravelines, Strasbourg, Roubaix US : Beauharnois')
                                     option(value="europe") Europe
                                     option(value="canada") Canada
-                                    option(value="all") Indifférent
+                                    option(value="all") #{__('INDEX_AnyLocation')}
 
                                 if formErrors["zone"]
                                     span.help-block #{formErrors["zone"]["msg"]}
@@ -78,13 +75,13 @@ block content
                         .col-md-6.col-md-offset-3
                             .form-group
 
-                                label(for='mail') Adresse mail :
-                                input(type='text' name='mail' class='form-control' id='mail' placeholder='Votre adresse email' value=values.mail)
+                                label(for='mail') #{__('INDEX_EmailAddress')} :
+                                input(type='text' name='mail' class='form-control' id='mail' placeholder=__('INDEX_EmailAddress_PH') value=values.mail)
 
                                 if formErrors["mail"]
                                     span.help-block #{formErrors["mail"]["msg"]}
 
-                    .row
+                    div(class='row' style='display:none')
                         .col-md-6.col-md-offset-3
                             .form-group
 
@@ -114,6 +111,6 @@ block content
                             div(class='g-recaptcha' data-sitekey=recaptchaKey)
 
                     .text-center
-                        button(type='submit' id='submit' class='btn btn-flat btn-lg' data-loading-text='Validation en cours...' autocomplete='off') Envoyer
+                        button(type='submit' id='submit' class='btn btn-flat btn-lg' data-loading-text=__('INDEX_Validating') autocomplete='off') #{__('INDEX_Submit')}
 
             include includes/about
