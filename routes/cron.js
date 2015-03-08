@@ -161,7 +161,7 @@ var inform = function( req, res, request, next ) {
               <p>" + req.__({phrase: 'MAIL_P2', locale:request.language}) + " :</p> \
               <a href='" + orderUrl + "'>" + req.__({phrase: 'MAIL_P3', locale:request.language}) + "</a> \
               <p>" + req.__({phrase: 'MAIL_P4', locale:request.language}) + " :</p> \
-              <a href='" + process.env.APP_URL + "request/reactivate/" + request.token + "'>" + req.__({phrase: 'MAIL_P5', locale:request.language}) + "</a> \
+              <a href='" + process.env.APP_URL + "request/reactivate/" + request.id + "/" + request.token + "'>" + req.__({phrase: 'MAIL_P5', locale:request.language}) + "</a> \
               <p>OVH-Availability</p>"
     };
 

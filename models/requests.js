@@ -76,10 +76,10 @@ exports.getPendingRequests = function( next, callback ) {
 /*
  *  Permet de récupérer une demande spécifique à partir de son token
  */
-exports.getRequestByToken = function( token, next, callback ) {
+exports.getRequestByToken = function( id, token, next, callback ) {
 
     pg.connect(process.env.DATABASE_URL, function( err, client, done ) {
-        client.query("SELECT * FROM public.requests WHERE token = $1 LIMIT 1", [ token ], function( err, result ) {
+        client.query("SELECT * FROM public.requests WHERE id = $1 AND token = $2 LIMIT 1", [ id, token ], function( err, result ) {
 
             if( error.handler( err, client, done, next ) ) return;
             done();

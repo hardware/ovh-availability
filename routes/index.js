@@ -230,13 +230,13 @@ exports.run = function( req, res, next ) {
 
 /*
  *  INDEX
- *  Route : /request/reactivate/:token
+ *  Route : /request/reactivate/:id/:token
  *  Methode : GET
  */
 exports.reactivate = function( req, res, next ) {
 
     data.settings(req, res, { shouldBeLogged:false, mayBeLogged:true }, function( settings ) {
-        requestModel.getRequestByToken(req.params.token, next, function( request ) {
+        requestModel.getRequestByToken(req.params.id, req.params.token, next, function( request ) {
 
             async.waterfall([
 

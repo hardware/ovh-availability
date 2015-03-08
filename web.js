@@ -86,7 +86,7 @@ app.get('/en', routes.en);
 app.get('/fr', routes.fr);
 
 // REACTIVATE
-app.get('/request/reactivate/:token', routes.reactivate);
+app.get('/request/reactivate/:id/:token', routes.reactivate);
 
 // OAUTH
 app.get('/oauth/pushbullet', oauth.pushbullet);
