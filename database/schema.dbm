@@ -15,6 +15,39 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<enumeration values="pending,done"/>
 </usertype>
 
+<usertype name="servers_type" configuration="enumeration">
+	<schema name="public"/>
+	<enumeration values="sys,kimsufi"/>
+</usertype>
+
+<table name="servers">
+	<schema name="public"/>
+	<position x="207" y="247"/>
+	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="type" not-null="true">
+		<type name="public.servers_type"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="reference" not-null="true">
+		<type name="character varying" length="10"/>
+	</column>
+	<constraint name="id_servers_pm" type="pk-constr" factor="10" table="public.servers">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="unique_ref" type="uq-constr" factor="100" table="public.servers">
+		<columns names="reference" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<usertype name="zones" configuration="enumeration">
+	<schema name="public"/>
+	<enumeration values="europe,canada,all"/>
+</usertype>
+
 <table name="requests">
 	<schema name="public"/>
 	<position x="715" y="224"/>
@@ -50,39 +83,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<usertype name="servers_type" configuration="enumeration">
-	<schema name="public"/>
-	<enumeration values="sys,kimsufi"/>
-</usertype>
-
-<table name="servers">
-	<schema name="public"/>
-	<position x="207" y="247"/>
-	<column name="id" not-null="true">
-		<type name="serial"/>
-	</column>
-	<column name="type" not-null="true">
-		<type name="public.servers_type"/>
-	</column>
-	<column name="name" not-null="true">
-		<type name="character varying" length="100"/>
-	</column>
-	<column name="reference" not-null="true">
-		<type name="character varying" length="10"/>
-	</column>
-	<constraint name="id_servers_pm" type="pk-constr" factor="10" table="public.servers">
-		<columns names="id" ref-type="src-columns"/>
-	</constraint>
-	<constraint name="unique_ref" type="uq-constr" factor="100" table="public.servers">
-		<columns names="reference" ref-type="src-columns"/>
-	</constraint>
-</table>
-
-<usertype name="zones" configuration="enumeration">
-	<schema name="public"/>
-	<enumeration values="europe,canada,all"/>
-</usertype>
-
 <constraint name="ref_servers_fk" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.servers" table="public.requests">
 	<columns names="reference" ref-type="src-columns"/>
@@ -91,6 +91,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_requests_servers" type="relfk"
 	 src-table="public.requests"
 	 dst-table="public.servers"
-	 src-required="true" dst-required="true"/>
+	 src-required="false" dst-required="false"/>
 
 </dbmodel>

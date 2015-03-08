@@ -1,6 +1,5 @@
 var S            = require('string');
 var async        = require('async');
-var request      = require('request');
 var ovh          = require('./ovhApi');
 var mailer       = require('./mailer');
 var pushbullet   = require('./pushbulletApi.js');
@@ -44,7 +43,7 @@ exports.handleRequests = function( req, res, next ) {
                     };
 
                     availableOffers.push( offer );
-                    inform( res, request, next );
+                    inform( req, res, request, next );
                     mailNotificationCounter++;
 
                     if( request.pushbullet_token )
@@ -124,33 +123,46 @@ exports.handleRequests = function( req, res, next ) {
 /*
  *  Permet d'informer l'utilisateur par mail et par Pushbullet de la disponibilité d'une offre d'OVH
  */
-var inform = function( res, request, next ) {
+var inform = function( req, res, request, next ) {
 
-    var orderUrl = ''
+    if(request.language == 'fr') {
 
-    switch( request.type ) {
-        case 'sys':
-            if( S( request.reference ).contains('game') )
-                orderUrl = 'https://eu.soyoustart.com/fr/cgi-bin/newOrder/order.cgi?hard=' + request.reference
-            else
-                orderUrl = 'https://eu.soyoustart.com/fr/commande/soYouStart.xml?reference=' + request.reference
-            break;
-        case 'kimsufi':
-            orderUrl = 'https://www.kimsufi.com/fr/commande/kimsufi.xml?reference=' + request.reference
-            break;
+        switch( request.type ) {
+            case 'sys':
+                if( S( request.reference ).contains('game') )
+                    orderUrl = 'https://eu.soyoustart.com/fr/cgi-bin/newOrder/order.cgi?hard=' + request.reference
+                else
+                    orderUrl = 'https://eu.soyoustart.com/fr/commande/soYouStart.xml?reference=' + request.reference
+                break;
+            case 'kimsufi':
+                orderUrl = 'https://www.kimsufi.com/fr/commande/kimsufi.xml?reference=' + request.reference
+                break;
+        }
+
+    } else {
+
+        switch( request.type ) {
+            case 'sys':
+                orderUrl = 'https://www.soyoustart.com/';
+                break;
+            case 'kimsufi':
+                orderUrl = 'https://www.kimsufi.com/';
+                break;
+        }
+
     }
 
     var payload = {
         to:request.mail,
-        from:'nepasrepondre@availability.ovh',
-        subject:'[ovh-availability] Votre serveur est disponible ( ' + request.name + ' )',
-        html:"<p>Bonjour,</p> \
-              <p>Le serveur " + request.name + " est disponible.</p> \
-              <p>Pour le réserver, cliquez sur le lien ci-dessous :</p> \
-              <a href='" + orderUrl + "'>Commander</a> \
-              <p>Si vous avez raté l'offre, vous pouvez toujours réactiver votre demande en cliquant sur ce lien :</p> \
-              <a href='" + process.env.APP_URL + "request/reactivate/" + request.token + "'>Réactiver ma demande</a> \
-              <p>A très bientôt sur ovh-availability</p>"
+        from:'no-reply@availability.ovh',
+        subject:'[ovh-availability] ' + req.__({phrase: 'MAIL_P0', locale:request.language}) + ' ( ' + request.name + ' )',
+        html:"<p>" + req.__({phrase: 'MAIL_P1', locale:request.language}) + ",</p> \
+              <p>" + req.__({phrase: 'The server %s is available', locale:request.language}, request.name) +".</p> \
+              <p>" + req.__({phrase: 'MAIL_P2', locale:request.language}) + " :</p> \
+              <a href='" + orderUrl + "'>" + req.__({phrase: 'MAIL_P3', locale:request.language}) + "</a> \
+              <p>" + req.__({phrase: 'MAIL_P4', locale:request.language}) + " :</p> \
+              <a href='" + process.env.APP_URL + "request/reactivate/" + request.token + "'>" + req.__({phrase: 'MAIL_P5', locale:request.language}) + "</a> \
+              <p>OVH-Availability</p>"
     };
 
     // Envoi du mail de notification
@@ -162,7 +174,7 @@ var inform = function( res, request, next ) {
 
     if( request.pushbullet_token )
         // Envoi de la notification à Pushbullet
-        pushbullet.sendNotification( request.pushbullet_token, request.name, orderUrl, next );
+        pushbullet.sendNotification( req, request, orderUrl, next );
 
     // Mise à jour de l'état de la demande ( pending -> done )
     requestModel.updateState( 'done', request.id, next );

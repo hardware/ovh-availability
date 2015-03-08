@@ -162,7 +162,8 @@ exports.run = function( req, res, next ) {
                             token:buffer.toString('hex'),
                             phone: ( req.session.phone ) ? req.session.phone : null,
                             pushbulletToken: ( req.session.pushbullet.token ) ? req.session.pushbullet.token : null,
-                            zone:req.body.zone
+                            zone:req.body.zone,
+                            language:req.getLocale()
                         };
 
                         requestModel.add(data, next, function( result ) {

@@ -61,29 +61,11 @@ exports.up = function( next ) {
 
             },
 
-            // Création de la relation entre la table 'servers' et 'requests'
-            function( callback ) {
-
-                client.query("ALTER TABLE public.requests ADD CONSTRAINT ref_servers_fk FOREIGN KEY (reference) \
-                              REFERENCES public.servers (reference) MATCH FULL \
-                              ON DELETE NO ACTION ON UPDATE NO ACTION;", function( err, result ) {
-
-                    callback();
-
-                });
-
-            },
-
             // Ajout des serveurs d'OVH dans la table 'servers'
             function( callback ) {
 
                 async.parallel([
 
-                    function( callback ) {
-                        client.query("INSERT INTO servers (type, name, reference) VALUES ('sys', 'E3-SAT-1', '143sys4')", function( err, result ) {
-                            callback();
-                        });
-                    },
                     function( callback ) {
                         client.query("INSERT INTO servers (type, name, reference) VALUES ('sys', 'E3-SAT-1', '143sys4')", function( err, result ) {
                             callback();
@@ -190,17 +172,12 @@ exports.up = function( next ) {
                         });
                     },
                     function( callback ) {
-                        client.query("INSERT INTO servers (type, name, reference) VALUES ('kimsufi', 'KS-2a', '150sk20')", function( err, result ) {
+                        client.query("INSERT INTO servers (type, name, reference) VALUES ('kimsufi', 'KS-2', '150sk20')", function( err, result ) {
                             callback();
                         });
                     },
                     function( callback ) {
-                        client.query("INSERT INTO servers (type, name, reference) VALUES ('kimsufi', 'KS-2b', '150sk21')", function( err, result ) {
-                            callback();
-                        });
-                    },
-                    function( callback ) {
-                        client.query("INSERT INTO servers (type, name, reference) VALUES ('kimsufi', 'KS-2c', '150sk22')", function( err, result ) {
+                        client.query("INSERT INTO servers (type, name, reference) VALUES ('kimsufi', 'KS-2 SSD', '150sk22')", function( err, result ) {
                             callback();
                         });
                     },

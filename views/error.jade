@@ -9,7 +9,7 @@ block content
             .box-note.error
                 #slider-note
                     .carousel-inner
-                        .item.active!= '<strong>' + __('ERR_Error') + ' ' + statusCode + '</strong> - ' + message
+                        .item.active!= '<strong>E' + statusCode + '</strong> - ' + message
 
             .text-center
                 button(type='button' class='btn btn-flat style2' onclick='window.location.href="/"') #{__('ANY_BackToHome')}

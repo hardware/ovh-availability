@@ -42,21 +42,21 @@ exports.getUserIdentity = function( token, next, callback ) {
 /*
  *  Envoi une notification à Pushbullet
  */
-exports.sendNotification = function( token, offer, orderUrl, next ) {
+exports.sendNotification = function( req, dbReq, orderUrl, next ) {
 
     request({
 
         uri:'https://api.pushbullet.com/v2/pushes',
         method:'POST',
         headers: {
-            'Authorization': 'Bearer ' + token,
+            'Authorization': 'Bearer ' + dbReq.pushbullet_token,
             'Content-Type': 'application/json'
         },
         json:true,
         body:{
             type:'link',
-            title:"Offre disponible",
-            body:"L'offre " + offer + " est disponible, vous pouvez commander dès maintenant.",
+            title:req.__({phrase: 'NOTIFICATION_Title', locale:dbReq.language}),
+            body:req.__({phrase: 'The offer %s is available, you can order it now.', locale:dbReq.language}, dbReq.name),
             url:orderUrl
         }
 
