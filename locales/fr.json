@@ -30,6 +30,7 @@
     "REACTIVATE_InvalidToken":"Impossible d'effectuer cette action, token invalide.",
     "REACTIVATE_RequestStillActive":"Impossible d'effectuer cette action, votre demande est toujours active.",
     "REACTIVATE_Reactivated":"Votre demande a bien été réactivée.",
+    "REACTIVATE_Missed":"Vous n'avez pas connecté votre compte Pushbullet lors de votre première demande, vous devriez peut-être le faire pour ne pas rater l'offre une seconde fois.",
     "MAIL_P0":"Votre serveur est disponible",
     "MAIL_P1":"Bonjour",
     "MAIL_P2":"Pour le réserver, cliquez sur le lien ci-dessous",

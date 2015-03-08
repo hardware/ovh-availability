@@ -12,6 +12,11 @@ block content
                         .carousel-inner
                             .item.active #{formMessage}
             if formSuccess
+                if ! request.pushbullet_token
+                    .box-note.warning
+                        #slider-note
+                            .carousel-inner
+                                .item.active.text-center #{__('REACTIVATE_Missed')}
                 .box-note.success
                     #slider-note
                         .carousel-inner
