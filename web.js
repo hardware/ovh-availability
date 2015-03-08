@@ -131,6 +131,9 @@ app.use(function( err, req, res, next ) {
 
     var statusCode = ( err.status || 500 );
 
+    if( err.code == 'EBADCSRFTOKEN' )
+        err.message = res.__('ERR_CSRF');
+
     res.status( statusCode );
     res.render('error', {
         title:res.__('ERR_Error'),

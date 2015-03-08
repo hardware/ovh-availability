@@ -42,6 +42,7 @@
     "ANY_BackToHome":"Retour à l'accueil",
     "ERR_Error":"Erreur",
     "ERR_PageNotFound":"Page introuvable",
+    "ERR_CSRF":"Le token CSRF est invalide, merci de refaire votre demande.",
     "The server %s is available":"Le serveur %s est disponible",
     "The offer %s is available, you can order it now.":"L'offre %s est disponible, vous pouvez commander dès maintenant.",
     "%d pending request": {

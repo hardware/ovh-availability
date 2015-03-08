@@ -42,6 +42,7 @@
     "ANY_BackToHome":"Back to home",
     "ERR_Error":"Error",
     "ERR_PageNotFound":"Page not found",
+    "ERR_CSRF":"Bad CSRF token, please try to resubmit the form.",
     "The server %s is available":"The server %s is available",
     "The offer %s is available, you can order it now.":"The offer %s is available, you can order it now.",
     "%d pending request": {
