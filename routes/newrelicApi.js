@@ -3,7 +3,7 @@ var request = require('request');
 /*
  *  Permet d'envoyer de nouveaux évènements à l'API de NewRelic
  */
-exports.submitEvents = function( events ) {
+exports.submitEvents = function( events, next ) {
 
     request({
 

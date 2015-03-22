@@ -106,7 +106,7 @@ exports.handleRequests = function( req, res, next ) {
 
                 if( newRelicEvents.length > 0 )
                     // Envoi des évènement à l'API de NewRelic Insights
-                    newrelic.submitEvents( newRelicEvents );
+                    newrelic.submitEvents( newRelicEvents, next );
 
                 res.send('PROCESSING REQUESTS COMPLETED !');
 

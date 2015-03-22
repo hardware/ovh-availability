@@ -203,7 +203,7 @@ exports.run = function( req, res, next ) {
                     };
 
                     events.push( eventObject );
-                    newrelic.submitEvents( events );
+                    newrelic.submitEvents( events, next );
 
                     settings.formSuccess = true;
                     settings.formMessage = res.__('RUN_Success');
@@ -284,7 +284,7 @@ exports.reactivate = function( req, res, next ) {
                     };
 
                     events.push( eventObject );
-                    newrelic.submitEvents( events );
+                    newrelic.submitEvents( events, next );
 
                     settings.formSuccess = true;
                     settings.formMessage = res.__('REACTIVATE_Reactivated');
