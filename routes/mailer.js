@@ -70,7 +70,6 @@ var getPrefix = function() {
                 <tr style="vertical-align: top; padding: 0; "> \
                 <td style="vertical-align: top; text-align: left; padding: 0; " align="left" valign="top"> \
                 <h1 style="display: block; text-align: left; margin: 0 0 40px;" align="left"> \
-                <center><img src="https://i.imgur.com/qCTqUDK.png" style="outline: none; text-decoration: none; border: 0;" height="173" width="200"></center> \
                 </h1>';
 
     return html;

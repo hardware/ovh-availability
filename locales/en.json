@@ -17,7 +17,6 @@
     "INDEX_WelcomeMessage2":"You will be notified automatically when the desired server will be available.",
     "INDEX_Statistics":"STATISTICS",
     "INDEX_Popular":"Popular servers",
-    "INDEX_SupportedServices":"SUPPORTED SERVICES",
     "RUN_InvalidField":"The value of this field is invalid.",
     "RUN_RequiredField":"This field is required.",
     "RUN_InvalidPostData":"An error occured when validating the form, please verify the entered data.",
