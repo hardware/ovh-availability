@@ -39,17 +39,24 @@ exports.init = function( req, res, next, callback ) {
  *  Permet de récupérer les données de l'API d'OVH au format JSON
  */
 exports.getJson = function( next, callback ) {
-
-    request(process.env.OVH_API_URL, function( err, response, body ) {
-
-        if( err || response.statusCode != 200 ) {
-            next( new Error("OVH API - Request failed") );
+    
+    request({
+        
+	    uri:process.env.OVH_API_URL,
+	    method:'GET',
+	    timeout:15000,
+	    gzip:true
+	    
+    }, function( err, response, body ) {
+	    
+	    if( err || response.statusCode != 200 ) {
+            next( new Error("OVH API - Request failed ") );
             return;
+        } else {
+            var json = JSON.parse( body );
+            callback( json );   
         }
-
-        var json = JSON.parse( body );
-        callback( json );
-
+	    
     });
 
 };
