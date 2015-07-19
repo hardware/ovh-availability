@@ -44,7 +44,7 @@ Database is hosted on Amazon EC2.
 - Push your code and open a new pull request
 - Use [issues](https://github.com/hardware/ovh-availability/issues) for any questions
 
-### Support
+## Support
 
 https://github.com/hardware/ovh-availability/issues
 
