@@ -160,8 +160,7 @@ exports.checkOffers = function( req, res, next ) {
                     
                     }, function( err ) {
                         
-                        if( res.headerSent === false )
-                            res.json({ result:'processing offers completed', error:null });
+                        res.json({ result:'processing offers completed', error:null });
                         
                     });
                 
