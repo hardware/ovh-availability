@@ -5,6 +5,7 @@ var mailer       = require('./mailer');
 var pushbullet   = require('./pushbulletApi.js');
 var newrelic     = require('./newrelicApi.js');
 var requestModel = require('../models/requests');
+var serverModel  = require('../models/servers');
 
 /*
  *  Traitement de l'ensemble des demandes en attente
@@ -121,6 +122,57 @@ exports.handleRequests = function( req, res, next ) {
 };
 
 /*
+ *  Vérification de l'évolution des offres OVH
+ *  Route : /cron/checkOffers/:secureKey
+ *  Methode : GET
+ */
+exports.checkOffers = function( req, res, next ) {
+  
+    checkSecureKey(req, res, req.params.secureKey, function() {
+        ovh.getJson(next, function( json ) {
+            serverModel.getAllRefs(next, function( appRefsList ) {
+                
+                var ovhRefsList = [];
+                
+                async.each(json.answer.availability, function( offer, nextOffer ) {
+                
+                    ovhRefsList.push( offer.reference );
+                    nextOffer();
+                
+                }, function() {
+                
+                    async.each(appRefsList, function( ref, nextRef ) {
+                    
+                        if( ovhRefsList.indexOf( ref ) === -1 ) {
+                          
+                            mailer.send({
+                                
+                                to:process.env.ADMIN_EMAIL,
+                                from:'no-reply@availability.ovh',
+                                subject:"L'offre " + ref + " n'est plus disponible",
+                                html:"Attention l'offre " + ref + " n'est plus proposée par OVH, merci de la supprimer de la base de données"
+                                
+                            }, next);
+                            
+                        }
+                        
+                        nextRef();
+                    
+                    }, function( err ) {
+                        
+                        if( res.headerSent === false )
+                            res.json({ result:'processing offers completed', error:null });
+                        
+                    });
+                
+                });
+            });
+        });
+    });
+
+};
+
+/*
  *  Permet d'informer l'utilisateur par mail et par Pushbullet de la disponibilité d'une offre d'OVH
  */
 var inform = function( req, res, request, next ) {
@@ -232,6 +284,7 @@ var hash = function( str ) {
            COMMAND             FREQUENCY
 --------------------------------------------
 | cron --task handleRequests | every 1min |
+| cron --task checkOffers    |    daily   |
 --------------------------------------------
 
 Note :

@@ -93,6 +93,7 @@ app.get('/oauth/pushbullet', oauth.pushbullet);
 
 // CRON
 app.get('/cron/handleRequests/:secureKey', cron.handleRequests);
+app.get('/cron/checkOffers/:secureKey', cron.checkOffers);
 
 /*
  *  ERREUR 404
@@ -107,15 +108,15 @@ app.use(function( req, res, next ) {
  *  TOUTES LES AUTRES ERREURS
  */
 
-// Dev
 if (app.get('env') === 'development') {
 
+    // Dev
     app.use(function( err, req, res, next ) {
 
         var statusCode = ( err.status || 500 );
 
         res.status( statusCode );
-        res.render('error', {
+        return res.render('error', {
             title:res.__('ERR_Error'),
             error:err,
             message: err.message,
@@ -124,25 +125,27 @@ if (app.get('env') === 'development') {
 
     });
 
-}
-
-// Prod
-app.use(function( err, req, res, next ) {
-
-    var statusCode = ( err.status || 500 );
-
-    if( err.code == 'EBADCSRFTOKEN' )
-        err.message = res.__('ERR_CSRF');
-
-    res.status( statusCode );
-    res.render('error', {
-        title:res.__('ERR_Error'),
-        error:{},
-        message: err.message,
-        statusCode:statusCode
+} else {
+    
+    // Prod
+    app.use(function( err, req, res, next ) {
+    
+        var statusCode = ( err.status || 500 );
+        
+        if( err.code == 'EBADCSRFTOKEN' )
+            err.message = res.__('ERR_CSRF');
+        
+        res.status( statusCode );
+        return res.render('error', {
+            title:res.__('ERR_Error'),
+            error:{},
+            message: err.message,
+            statusCode:statusCode
+        });
+    
     });
-
-});
+    
+}
 
 var server = app.listen(app.get('port'), function() {
     console.log('Express server listening on port %d', app.get('port'));
