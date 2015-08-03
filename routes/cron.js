@@ -37,13 +37,12 @@ exports.handleRequests = function( req, res, next ) {
                             zone = "Europe";
                     }
 
-                    var offer = {
+                    availableOffers.push({
                         hash:hash( request.name + zone ),
                         offer:request.name,
                         zone:zone
-                    };
-
-                    availableOffers.push( offer );
+                    });
+                    
                     inform( req, res, request, next );
                     mailNotificationCounter++;
 
@@ -72,37 +71,28 @@ exports.handleRequests = function( req, res, next ) {
 
             async.each(availableOffers, function( availableOffer, nextOffer ) {
 
-                var eventAvailableOffersObject = {
+                newRelicEvents.push({
                     "eventType":"availableOffers",
                     "offer":availableOffer.offer,
                     "zone":availableOffer.zone
-                };
-
-                newRelicEvents.push( eventAvailableOffersObject );
+                });
+                
                 nextOffer();
 
             }, function( err ) {
 
                 if( mailNotificationCounter > 0 ) {
-
-                    var eventMailNotificationObject = {
+                    newRelicEvents.push({
                         "eventType":"mailNotifications",
                         "mailCounter":mailNotificationCounter,
-                    };
-
-                    newRelicEvents.push( eventMailNotificationObject );
-
+                    });
                 }
 
                 if( pushNotificationCounter > 0 ) {
-
-                    var eventPushNotificationObject = {
+                    newRelicEvents.push({
                         "eventType":"pushNotifications",
                         "pushCounter":pushNotificationCounter,
-                    };
-
-                    newRelicEvents.push( eventPushNotificationObject );
-
+                    });
                 }
 
                 if( newRelicEvents.length > 0 )
