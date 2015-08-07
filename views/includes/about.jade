@@ -22,10 +22,11 @@
                             ul.serverList
                                 for mostRequestedServer in stats.mostRequestedServers
                                     li #{mostRequestedServer.name} ( #{__n('%d request', mostRequestedServer.occurrences)} )
-            .box-note.warning
-                #slider-note
-                    .carousel-inner
-                        .item.active.text-center #{__('INDEX_NewRelicMaintenance')}
+            //-
+                .box-note.warning
+                    #slider-note
+                        .carousel-inner
+                            .item.active.text-center #{__('INDEX_NewRelicMaintenance')}
 
     .row
         .col-lg-12
