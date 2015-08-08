@@ -41,7 +41,7 @@ exports.send = function( email, next ) {
             sendgrid.send(email, function( err, json ) {
 
                 if( err )
-                    next( new Error("An error has occurred while running the email module [ " + err + " ]") );
+                    console.log("Email error [ " + err + " ]");
 
             });
 

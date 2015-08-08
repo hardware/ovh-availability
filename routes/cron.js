@@ -95,11 +95,11 @@ exports.handleRequests = function( req, res, next ) {
                     });
                 }
 
+                // Envoi des évènement à l'API de NewRelic Insights
                 if( newRelicEvents.length > 0 )
-                    // Envoi des évènement à l'API de NewRelic Insights
                     newrelic.submitEvents( newRelicEvents, next );
 
-                res.send('PROCESSING REQUESTS COMPLETED !');
+                res.json({ result:'processing requests completed', error:null });
 
             });
 

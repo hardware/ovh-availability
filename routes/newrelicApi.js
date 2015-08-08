@@ -19,7 +19,7 @@ exports.submitEvents = function( events, next ) {
     }, function( err, response, body ) {
 
         if( err || response.statusCode != 200 ) {
-            next( new Error("NEWRELIC API - Submitting events failed") );
+            console.log("NEWRELIC API - Submitting events failed");
             return;
         }
 
