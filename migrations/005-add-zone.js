@@ -21,12 +21,6 @@ exports.up = function( next ) {
             },
 
             function( callback ) {
-                client.query("UPDATE requests SET zone = 'all'", function( err, result ) {
-                    callback();
-                });
-            },
-
-            function( callback ) {
                 client.query('ALTER TABLE requests ALTER COLUMN zone SET NOT NULL', function( err, result ) {
                     callback();
                 });
