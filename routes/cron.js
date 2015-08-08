@@ -42,7 +42,7 @@ exports.handleRequests = function( req, res, next ) {
                         offer:request.name,
                         zone:zone
                     });
-                    
+
                     inform( req, res, request, next );
                     mailNotificationCounter++;
 
@@ -76,7 +76,7 @@ exports.handleRequests = function( req, res, next ) {
                     "offer":availableOffer.offer,
                     "zone":availableOffer.zone
                 });
-                
+
                 nextOffer();
 
             }, function( err ) {
@@ -117,43 +117,43 @@ exports.handleRequests = function( req, res, next ) {
  *  Methode : GET
  */
 exports.checkOffers = function( req, res, next ) {
-  
+
     checkSecureKey(req, res, req.params.secureKey, function() {
         ovh.getJson(next, function( json ) {
             serverModel.getAllRefs(next, function( appRefsList ) {
-                
+
                 var ovhRefsList = [];
-                
+
                 async.each(json.answer.availability, function( offer, nextOffer ) {
-                
+
                     ovhRefsList.push( offer.reference );
                     nextOffer();
-                
+
                 }, function() {
-                
+
                     async.each(appRefsList, function( ref, nextRef ) {
-                    
+
                         if( ovhRefsList.indexOf( ref ) === -1 ) {
-                          
+
                             mailer.send({
-                                
+
                                 to:process.env.ADMIN_EMAIL,
                                 from:'no-reply@availability.ovh',
                                 subject:"L'offre " + ref + " n'est plus disponible",
                                 html:"Attention l'offre " + ref + " n'est plus proposée par OVH, merci de la supprimer de la base de données"
-                                
+
                             }, next);
-                            
+
                         }
-                        
+
                         nextRef();
-                    
+
                     }, function( err ) {
-                        
+
                         res.json({ result:'processing offers completed', error:null });
-                        
+
                     });
-                
+
                 });
             });
         });
@@ -170,13 +170,16 @@ var inform = function( req, res, request, next ) {
 
         switch( request.type ) {
             case 'sys':
-                if( S( request.reference ).contains('game') )
-                    orderUrl = 'https://eu.soyoustart.com/fr/cgi-bin/newOrder/order.cgi?hard=' + request.reference
-                else
-                    orderUrl = 'https://eu.soyoustart.com/fr/commande/soYouStart.xml?reference=' + request.reference
+                orderUrl = 'https://eu.soyoustart.com/fr/commande/soYouStart.xml?reference=' + request.reference;
                 break;
             case 'kimsufi':
-                orderUrl = 'https://www.kimsufi.com/fr/commande/kimsufi.xml?reference=' + request.reference
+                orderUrl = 'https://www.kimsufi.com/fr/commande/kimsufi.xml?reference=' + request.reference;
+                break;
+            case 'ovh':
+                if( S( request.reference ).contains('hg') )
+                    orderUrl = 'https://www.ovh.com/fr/commande/hg.cgi?config=' + request.reference;
+                else
+                    orderUrl = 'https://www.ovh.com/fr/commande/dedies.cgi?hard=' + request.reference;
                 break;
         }
 
@@ -184,10 +187,16 @@ var inform = function( req, res, request, next ) {
 
         switch( request.type ) {
             case 'sys':
-                orderUrl = 'https://www.soyoustart.com/';
+                orderUrl = 'https://eu.soyoustart.com/en/cgi-bin/newOrder/order.cgi?hard=' + request.reference;
                 break;
             case 'kimsufi':
-                orderUrl = 'https://www.kimsufi.com/';
+                orderUrl = 'https://www.kimsufi.com/en/order/kimsufi.cgi?hard=' + request.reference;
+                break;
+            case 'ovh':
+                if( S( request.reference ).contains('hg') )
+                    orderUrl = 'https://www.ovh.co.uk/order/hg.cgi?config=' + request.reference;
+                else
+                    orderUrl = 'https://www.ovh.co.uk/order/dedies.cgi?hard=' + request.reference;
                 break;
         }
 
@@ -198,7 +207,7 @@ var inform = function( req, res, request, next ) {
         from:'no-reply@availability.ovh',
         subject:'[ovh-availability] ' + req.__({phrase: 'MAIL_P0', locale:request.language}) + ' ( ' + request.name + ' )',
         html:"<p>" + req.__({phrase: 'MAIL_P1', locale:request.language}) + ",</p> \
-              <p>" + req.__({phrase: 'The server %s is available', locale:request.language}, request.name) +".</p> \
+              <p>" + req.__({phrase: '%s offer is available', locale:request.language}, request.name) +".</p> \
               <p>" + req.__({phrase: 'MAIL_P2', locale:request.language}) + " :</p> \
               <a href='" + orderUrl + "'>" + req.__({phrase: 'MAIL_P3', locale:request.language}) + "</a> \
               <p>" + req.__({phrase: 'MAIL_P4', locale:request.language}) + " :</p> \
