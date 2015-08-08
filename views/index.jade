@@ -54,6 +54,9 @@ block content
                                     optgroup(label='Gamme Kimsufi :')
                                         for server in kimServersList
                                             option(value=server.reference selected=values.server == server.reference) #{server.name}
+                                    optgroup(label='Gamme OVH :')
+                                        for server in ovhServersList
+                                            option(value=server.reference selected=values.server == server.reference) #{server.name}
 
                                 if formErrors["server"]
                                     span.help-block #{formErrors["server"]["msg"]}

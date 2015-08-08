@@ -22,6 +22,7 @@ exports.index = function( req, res, next ) {
             settings.formErrors     = {};
             settings.sysServersList = ressources.sysServersList;
             settings.kimServersList = ressources.kimServersList;
+            settings.ovhServersList = ressources.ovhServersList;
             settings.stats          = ressources.stats;
             settings.countries      = countries.all;
             settings.pushbullet     = ( req.session.pushbullet.token ) ? true : false;
@@ -213,6 +214,7 @@ exports.run = function( req, res, next ) {
                 settings.formErrors     = ( errors ) ? errors : {};
                 settings.sysServersList = ressources.sysServersList;
                 settings.kimServersList = ressources.kimServersList;
+                settings.ovhServersList = ressources.ovhServersList;
                 settings.stats          = ressources.stats;
                 settings.countries      = countries.all;
                 settings.pushbullet     = ( req.session.pushbullet.token ) ? true : false;
@@ -341,6 +343,13 @@ var loadResources = function( options, next, callback ) {
         kimServersList: function( callback ) {
             serversModel.getServers('kimsufi', next, function( kimServersList ) {
                 callback(null, kimServersList);
+            });
+        },
+
+        // Liste des serveurs OVH
+        ovhServersList: function( callback ) {
+            serversModel.getServers('ovh', next, function( ovhServersList ) {
+                callback(null, ovhServersList);
             });
         },
 

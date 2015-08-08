@@ -1,6 +1,6 @@
 # ovh-availability
 
-Kimsufi & SoYouStart servers availability checker
+OVH, Kimsufi & SoYouStart servers availability checker
 
 ![build](https://img.shields.io/codeship/ad642cb0-6e4f-0132-b9bf-66f2bf861e14.svg)
 [![dependency](https://img.shields.io/david/hardware/ovh-availability.svg?label=Dependencies)](https://github.com/hardware/ovh-availability/blob/master/package.json#L9)
@@ -30,7 +30,7 @@ Database is hosted on Amazon EC2.
 
 ## Features
 
-- All Kimsufi & Soyoustart offers available
+- All OVH, Kimsufi & Soyoustart offers available ([Offers map](https://github.com/hardware/ovh-availability/blob/master/map.json))
 - Datacenter location selection (Europe, Canada, Any)
 - Push notification with Pushbullet OAUTH API
 - Statistics using NewRelic Insights (offers recently available, number of notifications)

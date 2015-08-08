@@ -5,7 +5,7 @@ exports.settings = function( req, res, options, callback ) {
 
     var settings = {
         path:req.path,
-        title:"Kimsufi/SoYouStart availability checker"
+        title:"OVH, Kimsufi & SoYouStart availability checker"
     };
 
     callback( settings );

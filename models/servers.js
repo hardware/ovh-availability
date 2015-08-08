@@ -3,7 +3,7 @@ var async = require('async');
 var error = require('../routes/errorHandler');
 
 /*
- *  Permet de récupérer l'ensemble des offres d'OVH par gamme ( sys/kimsufi )
+ *  Permet de récupérer l'ensemble des offres d'OVH par gamme ( ovh/sys/kimsufi )
  */
 exports.getServers = function( type, next, callback ) {
 

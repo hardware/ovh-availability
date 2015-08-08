@@ -17,7 +17,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <usertype name="servers_type" configuration="enumeration">
 	<schema name="public"/>
-	<enumeration values="sys,kimsufi"/>
+	<enumeration values="sys,kimsufi,ovh"/>
 </usertype>
 
 <table name="servers">
@@ -48,9 +48,14 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<enumeration values="europe,canada,all"/>
 </usertype>
 
+<usertype name="languages" configuration="enumeration">
+	<schema name="public"/>
+	<enumeration values="fr,en"/>
+</usertype>
+
 <table name="requests">
 	<schema name="public"/>
-	<position x="715" y="224"/>
+	<position x="715" y="205"/>
 	<column name="id" not-null="true">
 		<type name="serial"/>
 	</column>
@@ -78,6 +83,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="zone" not-null="true">
 		<type name="public.zones"/>
 	</column>
+	<column name="language" not-null="true">
+		<type name="public.languages"/>
+	</column>
 	<constraint name="id_requests_pm" type="pk-constr" factor="10" table="public.requests">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
@@ -91,6 +99,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_requests_servers" type="relfk"
 	 src-table="public.requests"
 	 dst-table="public.servers"
-	 src-required="false" dst-required="false"/>
+	 src-required="true" dst-required="true"/>
 
 </dbmodel>
