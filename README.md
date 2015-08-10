@@ -10,7 +10,7 @@ OVH, Kimsufi & SoYouStart servers availability checker
 
 ## Overview
 
-Ovh-availability is a web-based application written in Javascript. Main idea behind this project is to make your life easier by searching for you OVH offers automatically and notify you as aoon as servers are available for purchase. E-mail and Pushbullet notifications are available.
+Ovh-availability is a web-based application written in Javascript. Main idea behind this project is to make your life easier by searching for you OVH offers automatically and notify you as soon as servers are available for purchase. E-mail and Pushbullet notifications are available.
 
 Pushbullet is an application that allows you to receive notification directly to your mobile, tablet, browser etc...
 
