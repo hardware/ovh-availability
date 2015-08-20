@@ -255,10 +255,19 @@ exports.reactivate = function( req, res, next ) {
                 // Vérification de l'état de la demande
                 function( callback ) {
 
-                    if( request.state == 'pending' )
-                        callback( res.__('REACTIVATE_RequestStillActive') );
-                    else
+                    if( request.state == 'pending' ) {
+
+                        settings.formSuccess = true;
+                        settings.formMessage = res.__('REACTIVATE_Reactivated');
+                        settings.request     = request;
+
+                        return res.render('reactivate', settings);
+
+                    } else {
+
                         callback();
+
+                    }
 
                 },
 

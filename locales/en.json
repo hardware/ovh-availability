@@ -28,7 +28,6 @@
     "RUN_DbError":"An error has occurred in the database.",
     "RUN_Success":"Your request has been taken into account.",
     "REACTIVATE_InvalidToken":"Can not perform this action, invalid token.",
-    "REACTIVATE_RequestStillActive":"Can not perform this action, your request is still active.",
     "REACTIVATE_Reactivated":"Your request has been reactivated.",
     "REACTIVATE_Missed":"You haven't connected your Pushbullet account during your first request, maybe you should do it to not miss the offer for a second time",
     "MAIL_P0":"Your server is available",
