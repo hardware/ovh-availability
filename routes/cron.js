@@ -51,9 +51,9 @@ exports.handleRequests = function( req, res, next ) {
 
                 }
 
-                nextRequest();
-
             });
+
+            nextRequest();
 
         }, function( err ) {
 
