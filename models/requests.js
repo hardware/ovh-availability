@@ -9,11 +9,11 @@ exports.add = function( data, next, callback ) {
 
     pg.connect(process.env.DATABASE_URL, function( err, client, done ) {
 
-        client.query('INSERT INTO public.requests( reference, mail, date, state, token, phone, pushbullet_token, zone, language ) \
-                      VALUES( $1, $2, DEFAULT, DEFAULT, $3, $4, $5, $6, $7 )',
+        client.query('INSERT INTO public.requests( reference, mail, date, state, token, phone, pushbullet_token, zone, language, pushbullet_email ) \
+                      VALUES( $1, $2, DEFAULT, DEFAULT, $3, $4, $5, $6, $7, $8 )',
 
             [ data.reference, data.mail, data.token, data.phone,
-              data.pushbulletToken, data.zone, data.language ], function( err, result ) {
+              data.pushbulletToken, data.zone, data.language, data.pushbulletEmail ], function( err, result ) {
 
             if( error.handler( err, client, done, next ) ) return;
             done();
@@ -62,6 +62,28 @@ exports.getPendingRequests = function( next, callback ) {
                       LEFT JOIN public.servers s ON s.reference = r.reference \
                       WHERE r.state = $1",
             [ 'pending' ], function( err, result ) {
+
+            if( error.handler( err, client, done, next ) ) return;
+            done();
+
+            callback( result.rows );
+
+        });
+    });
+
+};
+
+/*
+ *  Permet de récupérer l'ensemble des demandes en attente d'un utilisateur
+ */
+exports.getUserPendingRequests = function( email, next, callback ) {
+
+    pg.connect(process.env.DATABASE_URL, function( err, client, done ) {
+        client.query("SELECT r.id, r.reference, r.date, r.mail, r.phone, r.token, r.pushbullet_email, r.zone, r.language, s.type, s.name \
+                      FROM public.requests r \
+                      LEFT JOIN public.servers s ON s.reference = r.reference \
+                      WHERE r.state = $1 AND r.pushbullet_email = $2",
+            [ 'pending', email ], function( err, result ) {
 
             if( error.handler( err, client, done, next ) ) return;
             done();

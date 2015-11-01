@@ -2,6 +2,7 @@ var async        = require('async');
 var crypto       = require('crypto');
 var countries    = require('country-data').countries;
 var phone        = require('phone');
+var moment       = require('moment');
 var data         = require('./data');
 var ovh          = require('./ovhApi');
 var recaptcha    = require('./recaptcha');
@@ -20,6 +21,7 @@ exports.index = function( req, res, next ) {
         loadResources({ refs:false }, next, function( ressources ) {
 
             settings.formErrors     = {};
+            settings.moment         = moment;
             settings.sysServersList = ressources.sysServersList;
             settings.kimServersList = ressources.kimServersList;
             settings.ovhServersList = ressources.ovhServersList;
@@ -30,7 +32,14 @@ exports.index = function( req, res, next ) {
                 mail: ( settings.pushbullet ) ? req.session.pushbullet.email : null
             };
 
-            res.render('index', settings);
+            if(settings.pushbullet) {
+              requestModel.getUserPendingRequests(req.session.pushbullet.email, next, function(requests) {
+                settings.requests = requests;
+                res.render('index', settings);
+              })
+            } else {
+              res.render('index', settings);
+            }
 
         });
     });
@@ -163,6 +172,7 @@ exports.run = function( req, res, next ) {
                             token:buffer.toString('hex'),
                             phone: ( req.session.phone ) ? req.session.phone : null,
                             pushbulletToken: ( req.session.pushbullet.token ) ? req.session.pushbullet.token : null,
+                            pushbulletEmail: ( req.session.pushbullet.email ) ? req.session.pushbullet.email : null,
                             zone:req.body.zone,
                             language:req.getLocale()
                         };

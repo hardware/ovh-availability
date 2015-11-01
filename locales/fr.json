@@ -18,6 +18,7 @@
     "INDEX_Statistics":"STATISTIQUES",
     "INDEX_Popular":"Serveurs les plus demandés",
     "INDEX_NewRelicMaintenance":"Le module de statistiques est actuellement en cours de maintenance.",
+    "INDEX_PendingRequests":"Vos demandes en cours...",
     "RUN_InvalidField":"La valeur de ce champ est invalide.",
     "RUN_RequiredField":"Ce champ est requis.",
     "RUN_InvalidPostData":"Une erreur est survenue lors de la validation du formulaire, veuillez vérifier les données saisies.",

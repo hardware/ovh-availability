@@ -116,4 +116,26 @@ block content
                     .text-center
                         button(type='submit' id='submit' class='btn btn-flat btn-lg' data-loading-text=__('INDEX_Validating') autocomplete='off') #{__('INDEX_Submit')}
 
+                    if requests
+                      if requests.length > 0
+                        .deviter
+                        .row
+                          .col-lg-12
+                            h3.title.with-icon
+                              i.fa.fa-history.icn-title
+                              | #{__('INDEX_PendingRequests')}
+                            table.table.table-striped
+                              tr
+                                th #
+                                th Mail
+                                th Date
+                                th #{__('INDEX_Location')}
+                              each request in requests
+                                - var zone = (request.zone === 'all') ? __('INDEX_AnyLocation') : request.zone.toUpperCase();
+                                tr
+                                  td #{request.name}
+                                  td #{request.mail}
+                                  td #{moment(request.date).format("DD/MM/YYYY HH:mm")}
+                                  td #{zone}
+
             include includes/about
