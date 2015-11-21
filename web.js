@@ -28,7 +28,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 i18n.configure({
-    locales:['en', 'fr'],
+    locales:['en', 'fr', 'pt_BR'],
     defaultLocale: 'en',
     cookie: 'language',
     directory: path.join(__dirname, 'locales'),
@@ -84,6 +84,7 @@ app.post('/', routes.run);
 // LANGUAGE
 app.get('/en', routes.en);
 app.get('/fr', routes.fr);
+app.get('/pt_BR', routes.pt_BR);
 
 // REACTIVATE
 app.get('/request/reactivate/:id/:token', routes.reactivate);
@@ -126,18 +127,18 @@ if (app.get('env') === 'development') {
     });
 
 } else {
-    
+
     // Prod
     app.use(function( err, req, res, next ) {
-        
+
         if( res.headersSent )
             return next( err );
-    
+
         var statusCode = ( err.status || 500 );
-        
+
         if( err.code == 'EBADCSRFTOKEN' )
             err.message = res.__('ERR_CSRF');
-        
+
         res.status( statusCode );
         return res.render('error', {
             title:res.__('ERR_Error'),
@@ -145,9 +146,9 @@ if (app.get('env') === 'development') {
             message: err.message,
             statusCode:statusCode
         });
-    
+
     });
-    
+
 }
 
 var server = app.listen(app.get('port'), function() {

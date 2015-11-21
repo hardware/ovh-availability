@@ -343,6 +343,17 @@ exports.fr = function( req, res, next ) {
 
 };
 
+/*
+ *  Route : /pt_BR
+ *  Methode : GET
+ */
+exports.pt_BR = function( req, res, next ) {
+
+    res.cookie('language', 'pt_BR', { maxAge: 900000, httpOnly: true });
+    res.redirect('/');
+
+};
+
 
 /*
  *  Charge toutes les ressources de manière asynchrone
